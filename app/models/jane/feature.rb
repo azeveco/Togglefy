@@ -5,7 +5,7 @@ module Jane
 
     validates :name, :identifier, presence: true, uniqueness: true
 
-    before_create :build_identifier
+    before_validation :build_identifier
 
     private
 
