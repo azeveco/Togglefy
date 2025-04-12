@@ -14,6 +14,7 @@ module Togglefy
 
       def copy_migrations
         migration_template "create_features.rb", "db/migrate/create_togglefy_features.rb"
+        sleep 1
         migration_template "create_feature_assignments.rb", "db/migrate/create_togglefy_feature_assignments.rb"
       end
     end
