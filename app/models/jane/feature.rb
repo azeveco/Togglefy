@@ -3,7 +3,7 @@ module Jane
     has_many :feature_assignments, dependent: :destroy
     has_many :assignables, through: :feature_assignments, source: :assignable
 
-    validates :name, :identifier, uniqueness: true
+    validates :name, :identifier, presence: true, uniqueness: true
 
     before_create :build_identifier
 
