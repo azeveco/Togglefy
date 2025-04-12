@@ -3,8 +3,12 @@
 require "jane/version"
 require "jane/engine"
 require "jane/featureable"
+require "jane/feature_manager"
 
 module Jane
   class Error < StandardError; end
-  # Your code goes here...
+  
+  def self.for(assignable)
+    FeatureManager.new(assignable)
+  end
 end

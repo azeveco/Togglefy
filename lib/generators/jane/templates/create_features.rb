@@ -7,5 +7,6 @@ class CreateJaneFeatures < ActiveRecord::Migration[8.0]
       t.timestamps
     end
     add_index :jane_features, :name, unique: true
+    add_index :jane_features, :identifier, unique: true
   end
 end
