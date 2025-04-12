@@ -4,7 +4,7 @@ class CreateTogglefyFeatures < ActiveRecord::Migration[8.0]
       t.string :name, null: false
       t.string :identifier, null: false
       t.string :description
-      t.string :tenant
+      t.string :tenant_id
       t.string :group
       t.string :environment
       t.integer :status, default: 0, null: false
