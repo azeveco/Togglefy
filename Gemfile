@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in jane.gemspec
+# Specify your gem's dependencies in togglefy.gemspec
 gemspec
 
 gem "rake", "~> 13.0"

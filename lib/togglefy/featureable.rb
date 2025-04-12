@@ -1,10 +1,10 @@
-module Jane
+module Togglefy
   module Featureable
     extend ActiveSupport::Concern
 
     included do
-      has_many :feature_assignments, as: :assignable, class_name: "Jane::FeatureAssignment"
-      has_many :features, through: :feature_assignments, class_name: "Jane::Feature"
+      has_many :feature_assignments, as: :assignable, class_name: "Togglefy::FeatureAssignment"
+      has_many :features, through: :feature_assignments, class_name: "Togglefy::Feature"
     end
 
     def has_feature?(identifier)
@@ -28,9 +28,9 @@ module Jane
     private
 
     def find_feature!(feature)
-      return feature if feature.is_a?(Jane::Feature)
+      return feature if feature.is_a?(Togglefy::Feature)
 
-      Jane::Feature.find_by!(identifier: feature.to_s)
+      Togglefy::Feature.find_by!(identifier: feature.to_s)
     end
   end
 end

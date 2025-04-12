@@ -1,4 +1,4 @@
-module Jane
+module Togglefy
   class Feature < ApplicationRecord
     enum :status, [ :inactive, :active ]
     

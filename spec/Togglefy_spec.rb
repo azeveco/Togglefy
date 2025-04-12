@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe jane do
+RSpec.describe togglefy do
   it "has a version number" do
-    expect(Jane::VERSION).not_to be nil
+    expect(Togglefy::VERSION).not_to be nil
   end
 
   it "does something useful" do

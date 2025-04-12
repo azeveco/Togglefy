@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require "jane/version"
-require "jane/engine"
-require "jane/featureable"
-require "jane/feature_manager"
-require "jane/feature_query"
+require "togglefy/version"
+require "togglefy/engine"
+require "togglefy/featureable"
+require "togglefy/feature_manager"
+require "togglefy/feature_query"
 
-module Jane
+module Togglefy
   class Error < StandardError; end
 
   def self.feature(identifier)
