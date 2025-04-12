@@ -10,6 +10,13 @@ Describe how you achieved whatever you've done.
 
 You can put code snippets inside code blocks, you can link to lines from files of this PR by using permalink and so on.
 
+```ruby
+def important
+  puts "When using code blocks, make sure you define the language, in this case Ruby"
+  puts "Why? Well... to make sure that beautiful syntax highlight will show up"
+end
+```
+
 # Impacted processes/locations
 Make sure you write here which processes or locations were impacted by this PR.
 
