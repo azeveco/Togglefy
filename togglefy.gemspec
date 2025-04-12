@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-require_relative "lib/jane/version"
+require_relative "lib/togglefy/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "jane"
-  spec.version = Jane::VERSION
+  spec.name = "togglefy"
+  spec.version = Togglefy::VERSION
   spec.authors = ["Gabriel Azevedo"]
   spec.email = ["gazeveco@gmail.com"]
 
   spec.summary = "Simple and open source Feature Management."
-  spec.description = "Jane is a feature management solution to help you control which features an user or a group has access to."
-  spec.homepage = "https://github.com/azeveco/Jane"
+  spec.description = "Togglefy is a feature management solution to help you control which features an user or a group has access to."
+  spec.homepage = "https://github.com/azeveco/Togglefy"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.4.0"
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/azeveco/Jane"
-  spec.metadata["changelog_uri"] = "https://github.com/azeveco/Jane/releases"
+  spec.metadata["source_code_uri"] = "https://github.com/azeveco/Togglefy"
+  spec.metadata["changelog_uri"] = "https://github.com/azeveco/Togglefy/releases"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir.glob("lib/**/*") +
              Dir.glob("app/**/*") +
              Dir.glob("config/**/*") +
-             %w[LICENSE.txt README.md jane.gemspec]
+             %w[LICENSE.txt README.md togglefy.gemspec]
 
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }

@@ -1,7 +1,7 @@
 require "rails/generators"
 require "rails/generators/migration"
 
-module Jane
+module Togglefy
   module Generators
     class InstallGenerator < Rails::Generators::Base
       include Rails::Generators::Migration
@@ -13,8 +13,8 @@ module Jane
       end
 
       def copy_migrations
-        migration_template "create_features.rb", "db/migrate/create_jane_features.rb"
-        migration_template "create_feature_assignments.rb", "db/migrate/create_jane_feature_assignments.rb"
+        migration_template "create_features.rb", "db/migrate/create_togglefy_features.rb"
+        migration_template "create_feature_assignments.rb", "db/migrate/create_togglefy_feature_assignments.rb"
       end
     end
   end

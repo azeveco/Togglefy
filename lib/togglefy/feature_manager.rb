@@ -1,4 +1,4 @@
-module Jane
+module Togglefy
   class FeatureManager
     def initialize(assignable)
       @assignable = assignable
