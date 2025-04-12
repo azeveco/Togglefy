@@ -1,4 +1,3 @@
-# lib/jane/feature_manager.rb
 module Jane
   class FeatureManager
     def initialize(assignable)
