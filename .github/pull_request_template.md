@@ -15,6 +15,8 @@ def important
   puts "When using code blocks, make sure you define the language, in this case Ruby"
   puts "Why? Well... to make sure that beautiful syntax highlight will show up"
 end
+
+return important if you_love_community?
 ```
 
 # Impacted processes/locations
