@@ -25,16 +25,16 @@ module Jane
     FeatureQuery.new.for_type(klass)
   end
   
-  def self.for_group(klass)
-    FeatureQuery.new.for_group(klass)
+  def self.for_group(group)
+    FeatureQuery.new.for_group(group)
   end
 
   def self.without_group
     FeatureQuery.new.without_group
   end
 
-  def self.for_environment(env)
-    FeatureQuery.new.for_environment(env)
+  def self.for_environment(environment)
+    FeatureQuery.new.for_environment(environment)
   end
 
   def self.without_environment
@@ -51,6 +51,10 @@ module Jane
 
   def self.for_filters(filters: {})
     FeatureQuery.new.for_filters(filters)
+  end
+
+  def self.with_status(status)
+    FeatureQuery.new.with_status(status)
   end
 
   class <<self

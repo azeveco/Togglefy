@@ -18,18 +18,18 @@ module Jane
     end
     alias :for_role :for_group
 
-    def without_group(group)
-      Jane::Feature.without_group(group)
+    def without_group
+      Jane::Feature.without_group
     end
     alias :without_role :without_group
 
-    def for_environment(env)
-      Jane::Feature.for_environment(env)
+    def for_environment(environment)
+      Jane::Feature.for_environment(environment)
     end
     alias :for_env :for_environment
 
-    def without_environment(env)
-      Jane::Feature.without_environment(env)
+    def without_environment
+      Jane::Feature.without_environment
     end
     alias :without_env :without_environment
 
@@ -37,8 +37,8 @@ module Jane
       Jane::Feature.for_tenant(tenant_id)
     end
 
-    def without_tenant(tenant_id)
-      Jane::Feature.without_tenant(tenant_id)
+    def without_tenant
+      Jane::Feature.without_tenant
     end
 
     def for_filters(filters)
@@ -46,6 +46,10 @@ module Jane
         .for_group(filters[:group] || filters[:role])
         .for_environment(filters[:environment] || filters[:env])
         .for_tenant(filters[:tenant_id])
+    end
+
+    def with_status(status)
+      Jane::Feature.with_status(status)
     end
   end
 end
