@@ -6,6 +6,8 @@ Jane is free, open source and you are welcome to help build it.
 
 ## Installation
 
+### UNDER CONSTRUCTION BECAUSE GEM STILL NEEDS TO BE UPLOADED TO RUBYGEMS
+
 TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_IMMEDIATELY_AFTER_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
 
 Add the gem manually to your Gemfile:
