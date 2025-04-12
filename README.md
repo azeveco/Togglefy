@@ -9,7 +9,7 @@ Togglefy is free, open source and you are welcome to help build it.
 Add the gem manually to your Gemfile:
 
 ```gemfile
-gem 'togglefy', '~> 1.0', '>= 1.0.1'
+gem 'togglefy', '~> 1.0', '>= 1.0.2'
 ```
 
 Or install it and add to the application's Gemfile by executing:
