@@ -70,13 +70,22 @@ With that, everything is ready to use **Jane**, welcome!
 To create features it's as simple as drinking a nice cold beer after a hard day or drinking the entire bottle of coffee in a span of 1 hour:
 
 ```ruby
-Jane::Feature.create(name: "Magic", description: "You're a Wizard, Harry") # To create a simple Feature
+Jane::Feature.create(
+  name: "Magic",
+  description: "You're a Wizard, Harry"
+) # To create a simple Feature
 ```
 
 If you have tenant, groups (or roles), difference between environments, you can do the following:
 
 ```ruby
-Jane::Feature.create(name: "Super Powers", description: "With great power comes great responsibility", tenant_id: "123abc", group: :admin, environment: :production)
+Jane::Feature.create(
+  name: "Super Powers",
+  description: "With great power comes great responsibility", 
+  tenant_id: "123abc",
+  group: :admin,
+  environment: :production
+)
 ```
 
 You don't have to fill all fields, the only one that is mandatory is the name, because is by using the name that we will create the unique identifier, which is the field we'll use to find, delete and more.

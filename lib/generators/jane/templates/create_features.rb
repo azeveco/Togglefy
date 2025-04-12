@@ -7,7 +7,7 @@ class CreateJaneFeatures < ActiveRecord::Migration[8.0]
       t.string :tenant
       t.string :group
       t.string :environment
-      t.integer :status, default: 0
+      t.integer :status, default: 0, null: false
       t.timestamps
     end
     add_index :jane_features, :name, unique: true
