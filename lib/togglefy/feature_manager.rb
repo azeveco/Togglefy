@@ -14,12 +14,8 @@ module Togglefy
       self
     end
 
-    def clear(name = nil)
-      if name
-        assignable.remove_feature(name)
-      else
-        assignable.clear_features
-      end
+    def clear
+      assignable.clear_features
       self
     end
 
