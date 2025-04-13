@@ -292,7 +292,7 @@ To install this gem onto your local machine, run `bundle exec rake install`.
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/azeveco/togglefy. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/azeveco/togglefy/blob/master/CODE_OF_CONDUCT.md).
 
-There's a PR Template. Its usa is highly encouraged.
+There's a PR Template. Its use is highly encouraged.
 
 ## License
 
