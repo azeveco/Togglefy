@@ -55,10 +55,10 @@ After that, the next steps are also pretty simple.
 
 Add the following to your model that will have a relation with the features. It can be an `User`, `Account` or something you decide:
 ```ruby
-include Togglefy::Featureable
+include Togglefy::Assignable
 ```
 
-This will add the relationship between Togglefy's models and yours. Yours will be referred to as **assignable** throughout this documentation. If you want to check it in the source code, you can find it here: `lib/togglefy/featureable.rb` inside de `included` block.
+This will add the relationship between Togglefy's models and yours. Yours will be referred to as **assignable** throughout this documentation. If you want to check it in the source code, you can find it here: `lib/togglefy/assignable.rb` inside de `included` block.
 
 With that, everything is ready to use **Togglefy**, welcome!
 
@@ -107,7 +107,7 @@ status: "inactive"
 
 As you can see, the `Togglefy::Feature` also has a status and it is default to `inactive`. You can change this during creation.
 
-The status holds the `inactive` or `active` values. This status is not to define if a assignable (any model that has the `include Togglefy::Featureable`) either has ou hasn't a feature, but to decide if this feature is available in the entire system.
+The status holds the `inactive` or `active` values. This status is not to define if a assignable (any model that has the `include Togglefy::Assignable`) either has ou hasn't a feature, but to decide if this feature is available in the entire system.
 
 It's up to you to define how you will implement it.
 
@@ -128,7 +128,7 @@ You can change the status by:
 ### Managing Assignables <-> Features
 Now that we know how to create features, let's check how we can manage them.
 
-An assignable has some direct methods thanks to the `include Togglefy::Featureable`, which are (and let's use an user as an example of an assignable):
+An assignable has some direct methods thanks to the `include Togglefy::Assignable`, which are (and let's use an user as an example of an assignable):
 
 ```ruby
 user.has_feature?(:super_powers) # Checks if user has a single feature
@@ -183,7 +183,7 @@ You can send `nil` values too, like:
 ```ruby
 Togglefy.for_tenant(nil) # This will query me all Togglefy::Features with tenant_id nil
 
-Togglefy.for_filters(filters: {group: :admin, environment: :nil, tenant_id: nil})
+Togglefy.for_filters(filters: {group: :admin, environment: nil, tenant_id: nil})
 ```
 
 There's also another way to filter for `nil` values:
@@ -252,7 +252,7 @@ Togglefy.for_filters(filter: {env: :production})
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`.
 
 ## Contributing
 
