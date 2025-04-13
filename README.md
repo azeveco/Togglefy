@@ -1,5 +1,8 @@
 # Togglefy
 
+![Gem](https://img.shields.io/gem/v/togglefy)
+![Downloads](https://img.shields.io/gem/dt/togglefy)
+
 Togglefy is a simple feature management solution to help you control which features an user or a group has access to.
 
 Togglefy is free, open source and you are welcome to help build it.
