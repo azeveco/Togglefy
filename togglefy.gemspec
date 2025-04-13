@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["gazeveco@gmail.com"]
 
   spec.summary = "Simple and open source Feature Management."
-  spec.description = "Togglefy is a feature management solution to help you control which features an user or a group has access to."
+  spec.description = "Togglefy is a feature management Rails gem to help you control which features an user or a group has access to."
   spec.homepage = "https://github.com/azeveco/Togglefy"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.4.0"
@@ -31,10 +31,4 @@ Gem::Specification.new do |spec|
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
-
-  # Uncomment to register a new dependency of your gem
-  # spec.add_dependency "example-gem", "~> 1.0"
-
-  # For more information and examples about making a new gem, check out our
-  # guide at: https://bundler.io/guides/creating_gem.html
 end
