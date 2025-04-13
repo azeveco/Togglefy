@@ -47,16 +47,20 @@ module Togglefy
 
     def for_filters(filters)
       Togglefy::Feature
-        .then { |q| safe_chain(q, :for_group, filters[:group] || filters[:role]) }
-        .then { |q| safe_chain(q, :for_environment, filters[:environment] || filters[:env]) }
-        .then { |q| safe_chain(q, :for_tenant, filters[:tenant_id]) }
-        .then { |q| safe_chain(q, :with_status, filters[:status]) }
+        .then { |q| safe_chain(q, :for_group, filters[:group] || filters[:role], apply_if: filters.key?(:group) || filters.key?(:role)) }
+        .then { |q| safe_chain(q, :for_environment, filters[:environment] || filters[:env], apply_if: filters.key?(:environment) || filters.key?(:env)) }
+        .then { |q| safe_chain(q, :for_tenant, filters[:tenant_id], apply_if: filters.key?(:tenant_id)) }
+        .then { |q| safe_chain(q, :with_status, filters[:status], apply_if: filters.key?(:status)) }
     end
-
+    
     private
 
-    def safe_chain(query, method, value)
-      value ? query.public_send(method, value) : query
+    def safe_chain(query, method, value, apply_if: true)
+      apply_if && nil_or_not_blank?(value) ? query.public_send(method, value) : query
+    end
+
+    def nil_or_not_blank?(value)
+      value.nil? || !value.blank?
     end
   end
 end
