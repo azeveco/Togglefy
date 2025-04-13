@@ -60,6 +60,8 @@ include Togglefy::Assignable
 
 This will add the relationship between Togglefy's models and yours. Yours will be referred to as **assignable** throughout this documentation. If you want to check it in the source code, you can find it here: `lib/togglefy/assignable.rb` inside de `included` block.
 
+Old versions (`<= 1.0.2`) had the `Featureable` instead of the `Assignable`. The `Featureable` is now deprecated. You can still use it and it won't impact old users, but we highly recommend you to use the `Assignable` as it is semantically more accurate about what it does.
+
 With that, everything is ready to use **Togglefy**, welcome!
 
 ### Creating Features
