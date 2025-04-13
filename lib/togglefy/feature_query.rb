@@ -41,15 +41,22 @@ module Togglefy
       Togglefy::Feature.without_tenant
     end
 
-    def for_filters(filters)
-      Togglefy::Feature
-        .for_group(filters[:group] || filters[:role])
-        .for_environment(filters[:environment] || filters[:env])
-        .for_tenant(filters[:tenant_id])
-    end
-
     def with_status(status)
       Togglefy::Feature.with_status(status)
+    end
+
+    def for_filters(filters)
+      Togglefy::Feature
+        .then { |q| safe_chain(q, :for_group, filters[:group] || filters[:role]) }
+        .then { |q| safe_chain(q, :for_environment, filters[:environment] || filters[:env]) }
+        .then { |q| safe_chain(q, :for_tenant, filters[:tenant_id]) }
+        .then { |q| safe_chain(q, :with_status, filters[:status]) }
+    end
+
+    private
+
+    def safe_chain(query, method, value)
+      value ? query.public_send(method, value) : query
     end
   end
 end

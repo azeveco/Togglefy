@@ -6,14 +6,21 @@ module Togglefy
 
     def enable(feature)
       assignable.add_feature(feature)
+      self
     end
 
     def disable(feature)
       assignable.remove_feature(feature)
+      self
     end
 
-    def clear
-      assignable.clear_features
+    def clear(name = nil)
+      if name
+        assignable.remove_feature(name)
+      else
+        assignable.clear_features
+      end
+      self
     end
 
     def has?(feature)
