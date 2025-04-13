@@ -152,6 +152,17 @@ Togglefy.for(assignable).disable(:super_powers) # Disables/removes a feature fro
 Togglefy.for(assignable).clear # Clears all features from an assignable
 ```
 
+You can also supercharge it by chaining methods, like:
+
+```ruby
+# Instead of doing this:
+Togglefy.for(assignable).disable(:alpha_access)
+Togglefy.for(assignable).enable(:beta_access)
+
+# You can go something like this:
+Togglefy.for(assignable).disable(:alpha_access).enable(:beta_access)
+```
+
 This second method may look strange, but it's the default used by the gem and you will see that right now!
 
 ### Querying Features
@@ -179,6 +190,22 @@ Togglefy.for_filters(filters: {group: :admin, environment: :production})
 ```
 
 This will query me all `Togglefy::Feature`s that belongs to group admin and the production environment.
+
+The `Togglefy.for_filters` can have the following filters:
+
+```ruby
+filters: {
+  group:,
+  role:, # Acts as a group, explained in the Aliases section
+  environment:,
+  env:, # Acts as a group, explained in the Aliases section
+  tenant_id:,
+  status:,
+  identifier:
+}
+```
+
+The `Togglefy.for_filters` will only apply the filters sent that are `nil` or `!value.blank?`.
 
 You can send `nil` values too, like:
 
@@ -212,12 +239,14 @@ Togglefy.with_status(:active)
 #### Finding a specific feature
 ```ruby
 Togglefy.feature(:super_powers)
+Togglefy::Feature.identifier(:super_powers)
 Togglefy::Feature.find_by(identifier: :super_powers)
 ```
 
 #### Finding a specific feature just to destroy it because you're mean 😈
 ```ruby
 Togglefy.destroy_feature(:super_powers)
+Togglefy::Feature.identifier(:super_powers).destroy
 Togglefy::Feature.find_by(identifier: :super_powers).destroy
 ```
 
