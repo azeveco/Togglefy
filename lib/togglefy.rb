@@ -3,22 +3,21 @@
 require "togglefy/version"
 require "togglefy/engine"
 require "togglefy/featureable"
+require "togglefy/assignable"
+require "togglefy/feature_assignable_manager"
 require "togglefy/feature_manager"
 require "togglefy/feature_query"
 
 module Togglefy
   class Error < StandardError; end
 
+  # FeatureQuery
   def self.feature(identifier)
     FeatureQuery.new.feature(identifier)
   end
 
-  def self.destroy_feature(identifier)
-    FeatureQuery.new.destroy_feature(identifier)
-  end
-  
-  def self.for(assignable)
-    FeatureManager.new(assignable)
+  def self.features
+    FeatureQuery.new.features
   end
   
   def self.for_type(klass)
@@ -57,11 +56,50 @@ module Togglefy
     FeatureQuery.new.with_status(status)
   end
 
+  # FeatureManager
+  def self.create(**params)
+    FeatureManager.new.create(**params)
+  end
+
+  def self.update(identifier, **params)
+    FeatureManager.new(identifier).update(**params)
+  end
+
+  def self.destroy(identifier)
+    FeatureManager.new(identifier).destroy
+  end
+
+  def self.toggle(identifier)
+    FeatureManager.new(identifier).toggle
+  end
+
+  def self.active!(identifier)
+    FeatureManager.new(identifier).active!
+  end
+
+  def self.inactive!(identifier)
+    FeatureManager.new(identifier).inactive!
+  end
+
+  # FeatureAssignableManager
+  def self.for(assignable)
+    FeatureAssignableManager.new(assignable)
+  end
+
   class <<self
+    # FeatureQuery
     alias_method :for_role, :for_group
     alias_method :without_role, :without_group
 
     alias_method :for_env, :for_environment
     alias_method :without_env, :without_environment
+
+    # FeatureManager
+    alias_method :create_feature, :create
+    alias_method :update_feature, :update
+    alias_method :toggle_feature, :toggle
+    alias_method :activate_feature, :active!
+    alias_method :inactivate_feature, :inactive!
+    alias_method :destroy_feature, :destroy
   end
 end

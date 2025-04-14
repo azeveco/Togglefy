@@ -1,30 +1,39 @@
 module Togglefy
   class FeatureManager
-    def initialize(assignable)
-      @assignable = assignable
+    def initialize(identifier = nil)
+      @identifier = identifier unless identifier.nil?
     end
 
-    def enable(feature)
-      assignable.add_feature(feature)
-      self
+    def create(**params)
+      Togglefy::Feature.create!(**params)
     end
 
-    def disable(feature)
-      assignable.remove_feature(feature)
-      self
+    def update(**params)
+      feature.update!(**params)
     end
 
-    def clear
-      assignable.clear_features
-      self
+    def destroy
+      feature.destroy
     end
 
-    def has?(feature)
-      assignable.has_feature?(feature)
+    def toggle
+      return feature.inactive! if feature.active?
+
+      feature.active!
+    end
+
+    def active!
+      feature.active!
+    end
+
+    def inactive!
+      feature.inactive!
     end
 
     private
 
-    attr_reader :assignable
+    def feature
+      Togglefy::Feature.find_by!(identifier: @identifier)
+    end
   end
 end
