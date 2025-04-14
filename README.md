@@ -142,7 +142,9 @@ Togglefy.update_feature(:super_powers, tenant_id: "abc123")
 Or by finding the feature manually and then updating it like you always do with Rails:
 
 ```ruby
-feature = Togglefy::Feature.find_by(identifier: :super_powers) # You can do this by using another method specified at the "Finding a specific feature" section
+feature = Togglefy::Feature.find_by(identifier: :super_powers)
+# or
+feature = Togglefy.feature(:super_powers) # This is explained more in the "Finding a specific feature" section of this README
 
 feature.update(tenant_id: "123abc")
 ```
@@ -187,8 +189,15 @@ You can change the status by:
 * Updating the column
 * Doing a:
   ```ruby
-  Togglefy::Feature.active! # To activate
-  feature.inactive! # To inactivate
+  Togglefy::Feature.find_by(identifier: :super_powers).active!
+  Togglefy.feature(:super_powers).active!
+  Togglefy.active!(:super_powers)
+  Togglefy.activate_feature(:super_powers)
+
+  Togglefy::Feature.find_by(identifier: :super_powers).inactive!
+  Togglefy.feature(:super_powers).inactive!
+  Togglefy.inactive!(:super_powers)
+  Togglefy.inactivate_feature(:super_powers)
   ```
 
 ### Managing Assignables <-> Features
@@ -305,6 +314,12 @@ Togglefy.with_status(:active)
 Togglefy.feature(:super_powers)
 Togglefy::Feature.identifier(:super_powers)
 Togglefy::Feature.find_by(identifier: :super_powers)
+```
+
+#### Querying all features
+```ruby
+Togglefy.features(:super_powers)
+Togglefy::Feature.all
 ```
 
 #### Querying all features enabled to a klass
