@@ -4,9 +4,8 @@ module Togglefy
       Togglefy::Feature.find_by!(identifier:)
     end
 
-    def destroy_feature(identifier)
-      feature = Togglefy::Feature.find_by!(identifier:)
-      feature&.destroy
+    def features
+      Togglefy::Feature.all
     end
 
     def for_type(klass)

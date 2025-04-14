@@ -12,7 +12,7 @@ Togglefy is free, open source and you are welcome to help build it.
 Add the gem manually to your Gemfile:
 
 ```gemfile
-gem 'togglefy', '~> 1.0', '>= 1.0.2'
+gem 'togglefy', '~> 1.0', '>= 1.1.0'
 ```
 
 Or install it and add to the application's Gemfile by executing:
@@ -67,7 +67,9 @@ Old versions (`<= 1.0.2`) had the `Featureable` instead of the `Assignable`. The
 
 With that, everything is ready to use **Togglefy**, welcome!
 
-### Creating Features
+### Managing Features
+
+#### Creating Features
 To create features it's as simple as drinking a nice cold beer after a hard day or drinking the entire bottle of coffee in a span of 1 hour:
 
 ```ruby
@@ -89,6 +91,24 @@ Togglefy::Feature.create(
 )
 ```
 
+You can also use:
+
+```ruby
+Togglefy.create(
+  name: "Teleportation",
+  description: "Allows the assignable to teleport to anywhere",
+  group: :jumper
+)
+
+# Or
+
+Togglefy.create_feature(
+  name: "Teleportation",
+  description: "Allows the assignable to teleport to anywhere",
+  group: :jumper
+)
+```
+
 You don't have to fill all fields, the only one that is mandatory is the name, because is by using the name that we will create the unique identifier, which is the field we'll use to find, delete and more.
 
 The identifier is the name, downcased and snake_cased 🐍
@@ -102,10 +122,51 @@ identifier: "super_powers",
 description: "With great power comes great responsibility",
 created_at: "2025-04-12 01:39:10.176561000 +0000",
 updated_at: "2025-04-12 01:39:46.818928000 +0000",
-tenant: "123abc",
+tenant_id: "123abc",
 group: "admin",
 environment: "production",
 status: "inactive"
+```
+
+#### Updating a Feature
+
+To update a feature is as simple as riding on a monocycle while balancing a cup of water on the top of a really tall person that's on your shoulders.
+
+Here's how you can do it:
+
+```ruby
+Togglefy.update(:super_powers, tenant_id: "abc123")
+Togglefy.update_feature(:super_powers, tenant_id: "abc123")
+```
+
+Or by finding the feature manually and then updating it like you always do with Rails:
+
+```ruby
+feature = Togglefy::Feature.find_by(identifier: :super_powers) # You can do this by using another method specified at the "Finding a specific feature" section
+
+feature.update(tenant_id: "123abc")
+```
+
+#### Destroying Features
+
+It looks like you're mean 😈
+
+So here's how you can destroy a feature:
+
+```ruby
+Togglefy.destroy(:super_powers)
+Togglefy.destroy_feature(:super_powers)
+Togglefy::Feature.identifier(:super_powers).destroy
+Togglefy::Feature.find_by(identifier: :super_powers).destroy
+```
+
+#### Toggle Features
+
+You can toggle a feature status to active or inactive by doing this:
+
+```ruby
+Togglefy.toggle(:super_powers)
+Togglefy.toggle_feature(:super_powers)
 ```
 
 #### About `Togglefy::Feature` status
@@ -126,7 +187,7 @@ You can change the status by:
 * Updating the column
 * Doing a:
   ```ruby
-  feature.active! # To activate
+  Togglefy::Feature.active! # To activate
   feature.inactive! # To inactivate
   ```
 
@@ -144,7 +205,7 @@ user.clear_features # Clears all features from an user
 
 The assignable <-> feature relation is held by the `Togglefy::FeatureAssignment` table/model.
 
-But there's another way to manage assignables <-> features by using the `FeatureManager`. It's up to you to decide which one.
+But there's another way to manage assignables <-> features by using the `FeatureAssignableManager`. It's up to you to decide which one.
 
 Here are the examples:
 
@@ -244,13 +305,6 @@ Togglefy.with_status(:active)
 Togglefy.feature(:super_powers)
 Togglefy::Feature.identifier(:super_powers)
 Togglefy::Feature.find_by(identifier: :super_powers)
-```
-
-#### Finding a specific feature just to destroy it because you're mean 😈
-```ruby
-Togglefy.destroy_feature(:super_powers)
-Togglefy::Feature.identifier(:super_powers).destroy
-Togglefy::Feature.find_by(identifier: :super_powers).destroy
 ```
 
 #### Querying all features enabled to a klass
