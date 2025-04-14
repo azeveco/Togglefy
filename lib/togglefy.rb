@@ -7,6 +7,7 @@ require "togglefy/assignable"
 require "togglefy/feature_assignable_manager"
 require "togglefy/feature_manager"
 require "togglefy/feature_query"
+require "togglefy/scoped_bulk_wrapper"
 
 module Togglefy
   class Error < StandardError; end
@@ -84,6 +85,10 @@ module Togglefy
   # FeatureAssignableManager
   def self.for(assignable)
     FeatureAssignableManager.new(assignable)
+  end
+
+  def self.for_type(klass)
+    Togglefy::ScopedBulkWrapper.new(klass)
   end
 
   class <<self
