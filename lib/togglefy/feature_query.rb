@@ -1,13 +1,13 @@
 module Togglefy
   class FeatureQuery
+    def features
+      Togglefy::Feature.all
+    end
+
     def feature(identifier)
       return Togglefy::Feature.identifier(identifier) if identifier.is_a? Array
 
       Togglefy::Feature.find_by!(identifier:)
-    end
-
-    def features
-      Togglefy::Feature.all
     end
 
     def for_type(klass)

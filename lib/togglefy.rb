@@ -13,12 +13,12 @@ module Togglefy
   class Error < StandardError; end
 
   # FeatureQuery
-  def self.feature(identifier)
-    FeatureQuery.new.feature(identifier)
-  end
-
   def self.features
     FeatureQuery.new.features
+  end
+
+  def self.feature(identifier)
+    FeatureQuery.new.feature(identifier)
   end
   
   def self.for_type(klass)
@@ -87,7 +87,7 @@ module Togglefy
     FeatureAssignableManager.new(assignable)
   end
 
-  def self.for_type(klass)
+  def self.mass_for(klass)
     Togglefy::ScopedBulkWrapper.new(klass)
   end
 

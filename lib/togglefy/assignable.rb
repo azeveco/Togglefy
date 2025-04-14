@@ -4,9 +4,25 @@ module Togglefy
   module Assignable
     extend ActiveSupport::Concern
 
+    ALLOWED_ASSIGNABLE_FILTERS = %i[group role environment env tenant_id].freeze
+
     included do
       has_many :feature_assignments, as: :assignable, class_name: "Togglefy::FeatureAssignment"
       has_many :features, through: :feature_assignments, class_name: "Togglefy::Feature"
+
+      scope :with_features, ->(feature_ids, filters = {}) {
+        joins(:feature_assignments)
+        .where(feature_assignments: {
+          feature_id: feature_ids
+        })
+        .distinct
+      }
+
+      scope :without_features, ->(feature_ids, filters = {}) {
+        joins(left_join_on_features(feature_ids))
+          .where("fa.id IS NULL")
+          .distinct
+      }
     end
 
     def has_feature?(identifier)
@@ -33,6 +49,24 @@ module Togglefy
       return feature if feature.is_a?(Togglefy::Feature)
 
       Togglefy::Feature.find_by!(identifier: feature.to_s)
+    end
+
+    class_methods do
+      def left_join_on_features(feature_ids)
+        table = self.table_name
+        type = self.name
+
+        <<~SQL.squish
+          LEFT JOIN togglefy_feature_assignments fa
+            ON fa.assignable_id = #{table}.id
+            AND fa.assignable_type = '#{type}'
+            AND fa.feature_id IN (#{Array(feature_ids).join(",")})
+        SQL
+      end
+
+      def scoped_filters(filters)
+        where(filters.slice(ALLOWED_ASSIGNABLE_FILTERS).compact)
+      end
     end
   end
 end
