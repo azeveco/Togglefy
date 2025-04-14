@@ -7,7 +7,10 @@ module Togglefy
 
     before_validation :build_identifier
 
-    scope :identifier, ->(identifier) { where(identifier:) }
+    scope :identifier, ->(identifier) {
+      identifiers = Array(identifier)
+      where(identifier: identifiers) 
+    }
 
     scope :for_group, ->(group) { where(group:) }
     scope :without_group, -> { where(group: nil) }

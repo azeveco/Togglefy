@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "togglefy/version"
-require "togglefy/engine"
+require "togglefy/engine" if defined?(Rails)
 require "togglefy/featureable"
 require "togglefy/assignable"
 require "togglefy/feature_assignable_manager"
