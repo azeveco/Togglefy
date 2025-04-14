@@ -15,22 +15,18 @@ module Togglefy
     def for_group(group)
       Togglefy::Feature.for_group(group)
     end
-    alias :for_role :for_group
 
     def without_group
       Togglefy::Feature.without_group
     end
-    alias :without_role :without_group
 
     def for_environment(environment)
       Togglefy::Feature.for_environment(environment)
     end
-    alias :for_env :for_environment
 
     def without_environment
       Togglefy::Feature.without_environment
     end
-    alias :without_env :without_environment
 
     def for_tenant(tenant_id)
       Togglefy::Feature.for_tenant(tenant_id)

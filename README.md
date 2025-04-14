@@ -351,6 +351,26 @@ Togglefy.for_filters(filters: {environment: :production})
 Togglefy.for_filters(filter: {env: :production})
 ```
 
+## Aliases table
+
+Here's a table of all aliases available on Togglefy.
+
+You can use either, as long as you respect the rules listed.
+
+| Original              | Alias                | Rules                                               |
+| --------------------- | -------------------- | --------------------------------------------------- |
+| `for_group`           | `for_role`           | Can't be used if doing a direct `Togglefy::Feature` |
+| `without_group`       | `without_role`       | Can't be used if doing a direct `Togglefy::Feature` |
+| `for_environment`     | `for_env`            | Can't be used if doing a direct `Togglefy::Feature` |
+| `without_environment` | `without_env`        | Can't be used if doing a direct `Togglefy::Feature` |
+| `create`              | `create_feature`     | None                                                |
+| `update`              | `update_feature`     | None                                                |
+| `toggle`              | `toggle_feature`     | None                                                |
+| `active!`             | `activate_feature`   | None                                                |
+| `deactive!`           | `inactivate_feature` | None                                                |
+| `destroy`             | `destroy_feature`    | None                                                |
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
