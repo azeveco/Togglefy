@@ -8,7 +8,7 @@ module Togglefy
       has_many :feature_assignments, as: :assignable, class_name: "Togglefy::FeatureAssignment"
       has_many :features, through: :feature_assignments, class_name: "Togglefy::Feature"
 
-      scope :with_features, ->(feature_ids, filters = {}) {
+      scope :with_features, ->(feature_ids) {
         joins(:feature_assignments)
         .where(feature_assignments: {
           feature_id: feature_ids
@@ -16,7 +16,7 @@ module Togglefy
         .distinct
       }
 
-      scope :without_features, ->(feature_ids, filters = {}) {
+      scope :without_features, ->(feature_ids) {
         joins(left_join_on_features(feature_ids))
           .where("fa.id IS NULL")
           .distinct

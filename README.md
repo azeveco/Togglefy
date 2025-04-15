@@ -238,6 +238,46 @@ Togglefy.for(assignable).disable(:alpha_access).enable(:beta_access)
 
 This second method may look strange, but it's the default used by the gem and you will see that right now!
 
+#### Mass Enable/Disable of Features to/from Assignables
+You can mass enable/disable features to/from Assignables.
+
+Doing that is simple! Let's assume that your assignable is an User model.
+
+```ruby
+Togglefy.mass_for(User).bulk.enable(:super_powers) # To enable a specific feature to all users
+Togglefy.mass_for(User).bulk.enable([:super_powers, :magic, ...]) # To enable two or more features to all users
+Togglefy.mass_for(User).bulk.enable(:super_powers, percentage: 20) # To enable a feature to 20% of all users
+Togglefy.mass_for(User).bulk.enable([:super_powers, :magic, ...], percentage: 50) # To enable two or more features to 50% of all users
+```
+
+The same applies to the disable:
+
+```ruby
+Togglefy.mass_for(User).bulk.disable(:super_powers) # To disable a specific feature to all users
+Togglefy.mass_for(User).bulk.disable([:super_powers, :magic, ...]) # To disable two or more features to all users
+Togglefy.mass_for(User).bulk.disable(:super_powers, percentage: 5) # To disable a feature to 5% of all users
+Togglefy.mass_for(User).bulk.disable([:super_powers, :magic, ...], percentage: 75) # To disable two or more features to 75% of all users
+```
+
+There are a few things to pay attention:
+* Whenever you do a enable/disable, it will only query for valid assignables, so:
+  * If you do a enable, it will query all assignables that don't have the feature(s) enabled
+  * If you do a disable, it will query all assignables that do already have the feature(s) enabled
+* You can also use filters for:
+  * `group || role`
+  * `environment || env`
+  * `tenant_id`
+  * You can check about filters aliases at [Aliases table](#aliases-table)
+
+These will be applied to query features that match the identifiers + the filters sent.
+
+So it would be something like:
+
+```ruby
+Togglefy.mass_for(User).bulk.enable(:super_powers, group: :admin, percentage: 20)
+Togglefy.mass_for(User).bulk.disable(:magic, group: :dev, env: :production, percentage: 75)
+```
+
 ### Querying Features
 Remember when I told you a looooong time ago that the strange way is the default using by the gem? If you don't, no worries. It was a really loooong time ago, like `1.minute.ago`.
 
@@ -316,6 +356,31 @@ Togglefy::Feature.identifier(:super_powers)
 Togglefy::Feature.find_by(identifier: :super_powers)
 ```
 
+#### Finding multiple features
+```ruby
+Togglefy.feature([:super_powers, :magic])
+Togglefy::Feature.identifier([:super_powers, :magic])
+Togglefy::Feature.where(identifier: [:super_powers, :magic])
+```
+
+#### List all features of an Assignable
+Let's pretend that your assignable is an User.
+
+```ruby
+user = User.find(1)
+user.features
+```
+
+#### Check all features an Assignable have/doesn't have
+Again, let's pretend that your assignable is an User. This is the only case you need to send the feature id and not the identifier.
+
+```ruby
+User.with_features(1)
+User.with_features([2, 3])
+User.without_features(1)
+User.without_features([2, 3])
+```
+
 #### Querying all features
 ```ruby
 Togglefy.features(:super_powers)
@@ -328,7 +393,7 @@ Let's assume that you have two different assignables: User and Account.
 You want to list all features being used by assignables of User type:
 
 ```ruby
-Togglefy.for_type(User) # This is return all current FeatureAssignment with a User assignable
+Togglefy.for_type(User) # This returns all current FeatureAssignment with a User assignable
 ```
 
 #### Aliases
@@ -363,6 +428,8 @@ You can use either, as long as you respect the rules listed.
 | `without_group`       | `without_role`       | Can't be used if doing a direct `Togglefy::Feature` |
 | `for_environment`     | `for_env`            | Can't be used if doing a direct `Togglefy::Feature` |
 | `without_environment` | `without_env`        | Can't be used if doing a direct `Togglefy::Feature` |
+| `group`         | `role`                | Used inside methods that receives filters |
+| `environment`         | `env`                | Used inside methods that receives filters |
 | `create`              | `create_feature`     | None                                                |
 | `update`              | `update_feature`     | None                                                |
 | `toggle`              | `toggle_feature`     | None                                                |

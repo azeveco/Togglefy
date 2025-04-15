@@ -29,9 +29,9 @@ module Togglefy
       feature_ids = features.map(&:id)
 
       assignables = if action == :enable
-        klass.without_features(feature_ids, filters)
+        klass.without_features(feature_ids)
       else
-        klass.with_features(feature_ids, filters)
+        klass.with_features(feature_ids)
       end
 
       raise Togglefy::AssignablesNotFound.new(klass, identifiers, filters) if assignables.empty?
