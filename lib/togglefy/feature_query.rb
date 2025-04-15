@@ -5,7 +5,7 @@ module Togglefy
     end
 
     def feature(identifier)
-      return Togglefy::Feature.identifier(identifier) if identifier.is_a? Array
+      return Togglefy::Feature.identifier(identifier) if identifier.is_a?(Array)
 
       Togglefy::Feature.find_by!(identifier:)
     end

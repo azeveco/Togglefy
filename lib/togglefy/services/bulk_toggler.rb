@@ -20,7 +20,12 @@ module Togglefy
 
     def toggle(action, identifiers, filters)
       identifiers = Array(identifiers)
-      features = Togglefy.for_filters(filters: {identifier: identifiers}.merge(build_scope_filters(filters))).to_a # FIXME: For filters returning different features
+      features = Togglefy.for_filters(
+        filters: {identifier: identifiers}.merge(build_scope_filters(filters))
+      ).to_a
+
+      raise Togglefy::FeatureNotFound if features.empty?
+
       feature_ids = features.map(&:id)
 
       assignables = if action == :enable
@@ -28,6 +33,8 @@ module Togglefy
       else
         klass.with_features(feature_ids, filters)
       end
+
+      raise Togglefy::AssignablesNotFound.new(klass, identifiers, filters) if assignables.empty?
       
       assignables = sample_assignables(assignables, filters[:percentage]) if filters[:percentage]
 
@@ -55,7 +62,14 @@ module Togglefy
           end
         end
 
-        Togglefy::FeatureAssignment.insert_all(rows) if rows.any?
+        begin
+          Togglefy::FeatureAssignment.insert_all(rows) if rows.any?
+        rescue => error
+          raise Togglefy::BulkToggleFailed.new(
+            "Bulk toggle enable failed for #{klass.name} with identifiers #{identifiers.inspect}",
+            error
+          )
+        end
       elsif action == :disable
         ids_to_remove = []
         assignables.each do |assignable|
@@ -65,12 +79,19 @@ module Togglefy
           end
         end
 
-        if ids_to_remove.any?
-          Togglefy::FeatureAssignment.where(
-            assignable_id: ids_to_remove.map(&:first),
-            assignable_type: klass.name,
-            feature_id: ids_to_remove.map(&:last)
-          ).delete_all
+        begin
+          if ids_to_remove.any?
+            Togglefy::FeatureAssignment.where(
+              assignable_id: ids_to_remove.map(&:first),
+              assignable_type: klass.name,
+              feature_id: ids_to_remove.map(&:last)
+            ).delete_all
+          end
+        rescue => error
+          raise Togglefy::BulkToggleFailed.new(
+            "Bulk toggle disable failed for #{klass.name} with identifiers #{identifiers.inspect}",
+            error
+          )
         end
       end
     end

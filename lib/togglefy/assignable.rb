@@ -4,8 +4,6 @@ module Togglefy
   module Assignable
     extend ActiveSupport::Concern
 
-    ALLOWED_ASSIGNABLE_FILTERS = %i[group role environment env tenant_id].freeze
-
     included do
       has_many :feature_assignments, as: :assignable, class_name: "Togglefy::FeatureAssignment"
       has_many :features, through: :feature_assignments, class_name: "Togglefy::Feature"
@@ -62,10 +60,6 @@ module Togglefy
             AND fa.assignable_type = '#{type}'
             AND fa.feature_id IN (#{Array(feature_ids).join(",")})
         SQL
-      end
-
-      def scoped_filters(filters)
-        where(filters.slice(ALLOWED_ASSIGNABLE_FILTERS).compact)
       end
     end
   end

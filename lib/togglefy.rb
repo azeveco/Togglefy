@@ -8,6 +8,7 @@ require "togglefy/feature_assignable_manager"
 require "togglefy/feature_manager"
 require "togglefy/feature_query"
 require "togglefy/scoped_bulk_wrapper"
+require "togglefy/exceptions"
 
 module Togglefy
   class Error < StandardError; end
@@ -87,6 +88,7 @@ module Togglefy
     FeatureAssignableManager.new(assignable)
   end
 
+  # ScopedBulkWrapper
   def self.mass_for(klass)
     Togglefy::ScopedBulkWrapper.new(klass)
   end
