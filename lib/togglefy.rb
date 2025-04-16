@@ -1,23 +1,25 @@
 # frozen_string_literal: true
 
 require "togglefy/version"
-require "togglefy/engine"
+require "togglefy/engine" if defined?(Rails)
 require "togglefy/featureable"
 require "togglefy/assignable"
 require "togglefy/feature_assignable_manager"
 require "togglefy/feature_manager"
 require "togglefy/feature_query"
+require "togglefy/scoped_bulk_wrapper"
+require "togglefy/exceptions"
 
 module Togglefy
   class Error < StandardError; end
 
   # FeatureQuery
-  def self.feature(identifier)
-    FeatureQuery.new.feature(identifier)
-  end
-
   def self.features
     FeatureQuery.new.features
+  end
+
+  def self.feature(identifier)
+    FeatureQuery.new.feature(identifier)
   end
   
   def self.for_type(klass)
@@ -84,6 +86,11 @@ module Togglefy
   # FeatureAssignableManager
   def self.for(assignable)
     FeatureAssignableManager.new(assignable)
+  end
+
+  # ScopedBulkWrapper
+  def self.mass_for(klass)
+    Togglefy::ScopedBulkWrapper.new(klass)
   end
 
   class <<self

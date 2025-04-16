@@ -32,8 +32,10 @@ module Togglefy
 
     private
 
+    attr_reader :identifier
+
     def feature
-      Togglefy::Feature.find_by!(identifier: @identifier)
+      Togglefy::Feature.find_by!(identifier:)
     end
   end
 end
