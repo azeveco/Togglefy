@@ -2,10 +2,10 @@
 
 require "spec_helper"
 
-ENV['RAILS_ENV'] ||= 'test'
-require File.expand_path("../dummy/config/environment", __FILE__)
+ENV["RAILS_ENV"] ||= "test"
+require File.expand_path("dummy/config/environment", __dir__)
 require "rspec/rails"
-require 'database_cleaner/active_record'
+require "database_cleaner/active_record"
 require "togglefy"
 
 abort("The Rails environment is running in production mode!") if Rails.env.production?

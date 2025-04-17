@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Togglefy::Feature, type: :model do
   describe "validations" do
     it "is valid with name and identifier" do
@@ -24,11 +26,12 @@ RSpec.describe Togglefy::Feature, type: :model do
       context "build_identifier" do
         it "generates identifier when name is present and identifier is null" do
           feature = described_class.create!(name: "Awesome feature")
-          expect(feature.identifier.to_sym).to eq(:awesome_feature) 
+          expect(feature.identifier.to_sym).to eq(:awesome_feature)
         end
 
         it "doesn't run when name and identifier are present" do
-          feature = described_class.create!(name: "Mega feature", identifier: :identifier_unrelated_to_the_name_lol_this_is_big)
+          feature = described_class.create!(name: "Mega feature",
+                                            identifier: :identifier_unrelated_to_the_name_lol_this_is_big)
           expect(feature.identifier.to_sym).not_to eq(:mega_feature)
           expect(feature.identifier.to_sym).to eq(:identifier_unrelated_to_the_name_lol_this_is_big)
         end
@@ -42,7 +45,7 @@ RSpec.describe Togglefy::Feature, type: :model do
 
     it ".identifier finds by one or many identifiers" do
       expect(described_class.identifier(:a)).to include(active_feature)
-      expect(described_class.identifier([:a, :b])).to match_array([active_feature, inactive_feature])
+      expect(described_class.identifier(%i[a b])).to match_array([active_feature, inactive_feature])
     end
 
     it ".with_status returns correct features based on parameter" do

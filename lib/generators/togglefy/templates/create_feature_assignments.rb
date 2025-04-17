@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateTogglefyFeatureAssignments < ActiveRecord::Migration[8.0]
   def change
     create_table :togglefy_feature_assignments do |t|
@@ -5,6 +7,7 @@ class CreateTogglefyFeatureAssignments < ActiveRecord::Migration[8.0]
       t.references :assignable, polymorphic: true, null: false
       t.timestamps
     end
-    add_index :togglefy_feature_assignments, [:feature_id, :assignable_type, :assignable_id], unique: true, name: "index_togglefy_assignments_uniqueness"
+    add_index :togglefy_feature_assignments, %i[feature_id assignable_type assignable_id], unique: true,
+                                                                                           name: "index_togglefy_assignments_uniqueness"
   end
 end

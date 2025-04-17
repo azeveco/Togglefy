@@ -21,11 +21,11 @@ module Togglefy
   def self.feature(identifier)
     FeatureQuery.new.feature(identifier)
   end
-  
+
   def self.for_type(klass)
     FeatureQuery.new.for_type(klass)
   end
-  
+
   def self.for_group(group)
     FeatureQuery.new.for_group(group)
   end
@@ -93,20 +93,20 @@ module Togglefy
     Togglefy::ScopedBulkWrapper.new(klass)
   end
 
-  class <<self
+  class << self
     # FeatureQuery
-    alias_method :for_role, :for_group
-    alias_method :without_role, :without_group
+    alias for_role for_group
+    alias without_role without_group
 
-    alias_method :for_env, :for_environment
-    alias_method :without_env, :without_environment
+    alias for_env for_environment
+    alias without_env without_environment
 
     # FeatureManager
-    alias_method :create_feature, :create
-    alias_method :update_feature, :update
-    alias_method :toggle_feature, :toggle
-    alias_method :activate_feature, :active!
-    alias_method :inactivate_feature, :inactive!
-    alias_method :destroy_feature, :destroy
+    alias create_feature create
+    alias update_feature update
+    alias toggle_feature toggle
+    alias activate_feature active!
+    alias inactivate_feature inactive!
+    alias destroy_feature destroy
   end
 end
