@@ -26,4 +26,4 @@ jobs:
       - name: Run RSpec tests task
         run: bundle exec rake spec
       - name: Run RucoCop
-        run: bundle exec rake rubocop
+        run: bundle exec rubocop --config .rubocop.yml
