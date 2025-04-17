@@ -6,6 +6,9 @@ on:
       - main
 
   pull_request:
+    branches:
+      - main
+      - dev
 
 jobs:
   build:
@@ -26,5 +29,5 @@ jobs:
       # - name: Run RSpec tests task
       #   run: bundle exec rake spec
       - name: Run RuboCop
-        run: bundle exec rubocop --config .rubocop.yml
         run: bundle exec rubocop lib/ spec/ app/ --config .rubocop.yml
+        # run: bundle exec rubocop --config .rubocop.yml
