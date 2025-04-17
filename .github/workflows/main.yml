@@ -29,8 +29,3 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      # - name: Run RSpec tests task
-      #   run: bundle exec rake spec
-      # - name: Run RuboCop
-      #   run: bundle exec rubocop lib/ spec/ app/ --config .rubocop.yml
-        # run: bundle exec rubocop --config .rubocop.yml
