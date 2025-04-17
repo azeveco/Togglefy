@@ -1,4 +1,4 @@
-name: Tests
+name: RuboCop
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: RSpec
+    name: RuboCop
     strategy:
       matrix:
         ruby:
@@ -22,5 +22,5 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Run RSpec tests task
-        run: bundle exec rake spec
+      - name: Run RuboCop
+        run: bundle exec rubocop lib/ spec/ app/ --config .rubocop.yml
