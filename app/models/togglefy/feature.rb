@@ -5,7 +5,7 @@ module Togglefy
     has_many :feature_assignments, dependent: :destroy
     has_many :assignables, through: :feature_assignments, source: :assignable
 
-    before_validation :build_identifier
+    before_validation :build_identifier, if: Proc.new { |f| f.name.present? && f.identifier.blank?}
 
     scope :identifier, ->(identifier) { where(identifier:) }
 
