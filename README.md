@@ -12,7 +12,7 @@ Togglefy is free, open source and you are welcome to help build it.
 Add the gem manually to your Gemfile:
 
 ```gemfile
-gem 'togglefy', '~> 1.0', '>= 1.1.0'
+gem 'togglefy', '~> 1.0', '>= 1.1.1'
 ```
 
 Or install it and add to the application's Gemfile by executing:
@@ -37,7 +37,37 @@ After adding the gem to your project, you need to run the generate command to ad
 rails generate togglefy:install
 ```
 
-This command will create the migrations to create the tables inside your project. Please, don't remove/change anything that's there or Togglefy may not work as expected.
+This command will create the migrations to create the tables inside your project.
+
+If you use an older version of Rails (< 5), then the migration files don't need you to specify the version.
+
+To fix this, you will have to manually go to the two migration files of Togglefy: `create_feature` and `create_feature_assignments` and do the following:
+
+Change these lines from this:
+
+```ruby
+rails_version = "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
+
+class CreateTogglefyFeatures < ActiveRecord::Migration[rails_version]
+```
+
+```ruby
+rails_version = "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
+
+class CreateTogglefyFeatureAssignments < ActiveRecord::Migration[rails_version]
+```
+
+To this:
+
+```ruby
+class CreateTogglefyFeatures < ActiveRecord::Migration
+```
+
+```ruby
+class CreateTogglefyFeatureAssignments < ActiveRecord::Migration
+```
+
+Please, don't remove/change anything else that's there or Togglefy may not work as expected.
 
 Run the migration to create these in your datase:
 ```bash
