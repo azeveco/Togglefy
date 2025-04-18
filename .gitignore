@@ -9,3 +9,41 @@
 
 # rspec failure tracking
 .rspec_status
+
+/spec/dummy/.bundle
+
+# Ignore all environment files.
+/spec/dummy/.env*
+
+# Ignore all logfiles and tempfiles.
+/spec/dummy/log/
+/spec/dummy/log/*
+/spec/dummy/tmp/
+/spec/dummy/tmp/*
+!/spec/dummy/log/.keep
+!/spec/dummy/tmp/.keep
+
+# Ignore pidfiles, but keep the directory.
+/spec/dummy/tmp/pids/*
+!/spec/dummy/tmp/pids/
+!/spec/dummy/tmp/pids/.keep
+
+# Ignore storage (uploaded files in development and any SQLite databases).
+/spec/dummy/storage/
+/spec/dummy/storage/*
+!/spec/dummy/storage/.keep
+/spec/dummy/tmp/storage/*
+!/spec/dummy/tmp/storage/
+!/spec/dummy/tmp/storage/.keep
+
+/spec/dummy/public/
+/spec/dummy/public/assets
+
+/spec/dummy/lib/tasks/.keep
+/spec/dummy/script/
+/spec/dummy/script/.keep
+/spec/dummy/vendor/
+/spec/dummy/vendor/.keep
+
+# Ignore master key for decrypting credentials and more.
+/spec/dummy/config/master.key

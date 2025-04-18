@@ -1,8 +1,19 @@
 AllCops:
   TargetRubyVersion: 3.1
+  NewCops: disable
+  Exclude:
+    - "spec/dummy/**/*"
+    - "togglefy.gemspec"
+    - "lib/generators/togglefy/templates/*.rb"
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
+
+Metrics/BlockLength:
+  Max: 100
+
+Style/Documentation: # Disabled temporarily as documentation is the next issue
+  Enabled: false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Togglefy
   class FeatureAssignment < ApplicationRecord
     belongs_to :feature, class_name: "Togglefy::Feature"

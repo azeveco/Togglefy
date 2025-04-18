@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "togglefy/services/bulk_toggler"
 
 module Togglefy
