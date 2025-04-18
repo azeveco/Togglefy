@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Togglefy
   class AssignablesNotFound < Togglefy::Error
     def initialize(klass)

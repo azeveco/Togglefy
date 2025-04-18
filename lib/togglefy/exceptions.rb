@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "togglefy/errors/error"
 
 require "togglefy/errors/feature_not_found"

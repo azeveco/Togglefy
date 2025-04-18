@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateTogglefyFeatures < ActiveRecord::Migration[8.0]
   def change
     create_table :togglefy_features do |t|
