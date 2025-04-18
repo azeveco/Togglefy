@@ -1,4 +1,8 @@
-class CreateTogglefyFeatureAssignments < ActiveRecord::Migration[8.0]
+# frozen_string_literal: true
+
+rails_version = "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
+
+class CreateTogglefyFeatureAssignments < ActiveRecord::Migration[rails_version]
   def change
     create_table :togglefy_feature_assignments do |t|
       t.references :feature, null: false, foreign_key: { to_table: :togglefy_features }

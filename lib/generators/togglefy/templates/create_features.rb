@@ -1,4 +1,8 @@
-class CreateTogglefyFeatures < ActiveRecord::Migration[8.0]
+# frozen_string_literal: true
+
+rails_version = "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
+
+class CreateTogglefyFeatures < ActiveRecord::Migration[rails_version]
   def change
     create_table :togglefy_features do |t|
       t.string :name, null: false
