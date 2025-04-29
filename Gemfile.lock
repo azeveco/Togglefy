@@ -247,13 +247,13 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (~> 1.17)
-  database_cleaner-active_record
+  database_cleaner-active_record (~> 2.1)
   rails (~> 8.0.2)
   rake (~> 13.0)
   rspec (~> 3.0)
   rspec-rails (~> 7.1.1)
   rubocop (~> 1.21)
-  sqlite3 (>= 2.1)
+  sqlite3 (~> 2.1)
   togglefy!
 
 BUNDLED WITH

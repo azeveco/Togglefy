@@ -26,7 +26,6 @@ Gem::Specification.new do |spec|
   spec.files = Dir.glob("lib/**/*") +
                Dir.glob("app/**/*") +
                Dir.glob("config/**/*") +
-               Dir.glob("spec/**/*") +
                %w[LICENSE.txt README.md Rakefile togglefy.gemspec]
 
   spec.bindir = "exe"
@@ -34,8 +33,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bootsnap", "~> 1.17"
-  spec.add_development_dependency "database_cleaner-active_record"
+  spec.add_development_dependency "database_cleaner-active_record", "~> 2.1"
   spec.add_development_dependency "rails", "~> 8.0.2"
   spec.add_development_dependency "rspec-rails", "~> 7.1.1"
-  spec.add_development_dependency "sqlite3", ">= 2.1"
+  spec.add_development_dependency "sqlite3", "~> 2.1"
 end
