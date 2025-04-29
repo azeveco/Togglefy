@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "active_support/concern"
 
 module Togglefy
@@ -8,24 +10,25 @@ module Togglefy
       has_many :feature_assignments, as: :assignable, class_name: "Togglefy::FeatureAssignment"
       has_many :features, through: :feature_assignments, class_name: "Togglefy::Feature"
 
-      scope :with_features, ->(feature_ids) {
+      scope :with_features, lambda { |feature_ids|
         joins(:feature_assignments)
-        .where(feature_assignments: {
-          feature_id: feature_ids
-        })
-        .distinct
+          .where(feature_assignments: {
+                   feature_id: feature_ids
+                 })
+          .distinct
       }
 
-      scope :without_features, ->(feature_ids) {
+      scope :without_features, lambda { |feature_ids|
         joins(left_join_on_features(feature_ids))
           .where("fa.id IS NULL")
           .distinct
       }
     end
 
-    def has_feature?(identifier)
+    def feature?(identifier)
       features.exists?(identifier: identifier.to_s)
     end
+    alias has_feature? feature?
 
     def add_feature(feature)
       feature = find_feature!(feature)
@@ -51,8 +54,8 @@ module Togglefy
 
     class_methods do
       def left_join_on_features(feature_ids)
-        table = self.table_name
-        type = self.name
+        table = table_name
+        type = name
 
         <<~SQL.squish
           LEFT JOIN togglefy_feature_assignments fa

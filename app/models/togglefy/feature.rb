@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module Togglefy
   class Feature < ApplicationRecord
-    enum :status, [ :inactive, :active ]
-    
+    enum :status, %i[inactive active]
+
     has_many :feature_assignments, dependent: :destroy
     has_many :assignables, through: :feature_assignments, source: :assignable
 
-    before_validation :build_identifier
+    before_validation :build_identifier, if: proc { |f| f.name.present? && f.identifier.blank? }
 
     scope :identifier, ->(identifier) { where(identifier:) }
 
@@ -27,7 +29,7 @@ module Togglefy
     private
 
     def build_identifier
-      self.identifier = self.name.underscore.parameterize(separator: '_')
+      self.identifier = name.underscore.parameterize(separator: "_")
     end
   end
 end

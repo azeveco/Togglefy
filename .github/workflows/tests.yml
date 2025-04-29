@@ -1,0 +1,33 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: RSpec
+    strategy:
+      matrix:
+        ruby:
+          - '3.4.2'
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove gem cache (optional)
+        run: rm -rf ~/.bundle ~/.gem
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Run RSpec tests task
+        run: bundle exec rake spec

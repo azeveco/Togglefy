@@ -1,0 +1,41 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: false
+          ruby-version: '3.4.2'
+      - run: |-
+          bundle install
+      
+      - name: Run RuboCop
+        run: bundle exec rubocop --config .rubocop.yml
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: false
+          ruby-version: '3.4.2'
+      - run: |-
+          bundle install
+      
+      - name: Run RSpec tests
+        run: bundle exec rspec
