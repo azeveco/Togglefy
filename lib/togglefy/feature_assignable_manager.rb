@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# The Togglefy module serves as the namespace for the gem.
 module Togglefy
   # The FeatureAssignableManager class provides methods to manage features
   # for an assignable object, such as enabling, disabling, and clearing features.

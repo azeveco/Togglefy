@@ -2,7 +2,6 @@
 
 require "togglefy/assignable"
 
-# The Togglefy module serves as the namespace for the gem.
 module Togglefy
   # `Featureable` is an alias for `Assignable`.
   #

@@ -396,7 +396,7 @@ User.without_features([2, 3])
 
 #### Querying all features
 ```ruby
-Togglefy.features(:super_powers)
+Togglefy.features
 Togglefy::Feature.all
 ```
 

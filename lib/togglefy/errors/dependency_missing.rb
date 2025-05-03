@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# The Togglefy module serves as the namespace for the gem.
 module Togglefy
   # The DependencyMissing class represents an error raised when a feature
   # is missing a required dependency.

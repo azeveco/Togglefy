@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# The Togglefy module serves as the namespace for the gem.
 module Togglefy
   # The FeatureNotFound class represents an error raised when no features
   # match the provided criteria or filters.

@@ -14,12 +14,55 @@ require "togglefy/errors"
 # It includes methods for querying, creating, updating, toggling, and managing features.
 # It also provides a way to manage features for assignable objects.
 #
-# @example
-#   Togglefy.create(identifier: :new_feature, description: "A new feature")
-#   Togglefy.update(:new_feature, description: "Updated feature description")
-#   Togglefy.toggle(:new_feature)
-#   Togglefy.active!(:new_feature)
-#   Togglefy.inactive!(:new_feature)
+# == Features
+#
+# The Togglefy module provides a variety of features, including:
+#
+# - Querying features by type, group, environment, tenant, and custom filters
+# - Creating, updating, and deleting features
+# - Managing features for Assignables
+#
+# For more detailed information on each method,
+# please refer to the {file:README.md README}, individual method documentation in this file or the usage documentation.
+#
+# == Usage
+#
+# Main usage for this always starts with the {Togglefy} module.
+#
+# Below are a few examples on how to use Togglefy:
+#
+# === Examples
+#
+# - +Togglefy.feature(:super_powers)+
+# - +Togglefy.for_type(User)+
+# - +Togglefy.for_group(group)+
+# - +Togglefy.for_filters(filters: {group: :admin})+
+# - +Togglefy.with_status(:active)+
+# - +Togglefy.create(name: "Feature Name", identifier: :feature_name, description: "Feature description")+
+# - +Togglefy.update(:feature_name, name: "Updated Feature Name")+
+# - +Togglefy.destroy(:feature_name)+
+# - +Togglefy.toggle(:feature_name)+
+# - +Togglefy.inactive!(:feature_name)+
+# - +Togglefy.for(assignable).enable(:feature_name)+
+# - +Togglefy.for(assignable).has?(:feature_name)+
+# - +Togglefy.mass_for(Assignable).bulk.enable(:feature_name)+
+# - +Togglefy.mass_for(Assignable).bulk.enable(:feature_name, percentage: 35)+
+# - +Togglefy.mass_for(Assignable).bulk.disable([:feature_name, :another_feature])+
+#
+# == Aliases
+#
+# The following aliases are available for convenience:
+#
+# - +for_role+ is an alias for +for_group+
+# - +without_role+ is an alias for +without_group+
+# - +for_env+ is an alias for +for_environment+
+# - +without_env+ is an alias for +without_environment+
+# - +create_feature+ is an alias for +create+
+# - +update_feature+ is an alias for +update+
+# - +toggle_feature+ is an alias for +toggle+
+# - +activate_feature+ is an alias for +active!+
+# - +inactivate_feature+ is an alias for +inactive!+
+# - +destroy_feature+ is an alias for +destroy+
 #
 module Togglefy
   # Returns all features.

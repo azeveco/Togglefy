@@ -3,7 +3,6 @@
 require "rails/generators"
 require "rails/generators/migration"
 
-# The Togglefy module provides a namespace for all classes and modules related to the Togglefy gem.
 module Togglefy
   # The Generators module contains Rails generators for setting up and managing Togglefy in a Rails application.
   module Generators

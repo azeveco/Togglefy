@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# The Togglefy module serves as the namespace for the gem.
 module Togglefy
   # The FeatureManager class provides methods to manage features, including
   # creating, updating, toggling, and destroying them.

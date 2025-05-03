@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# The Togglefy module serves as the namespace for the gem.
 module Togglefy
   # The BulkToggler class provides functionality to enable or disable features
   # in bulk for assignables, such as users or accounts.

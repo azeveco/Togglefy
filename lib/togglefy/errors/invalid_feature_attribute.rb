@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# The Togglefy module serves as the namespace for the gem.
 module Togglefy
   # The InvalidFeatureAttribute class represents an error raised when an
   # invalid attribute is provided for a Togglefy::Feature.

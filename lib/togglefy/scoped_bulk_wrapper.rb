@@ -2,7 +2,6 @@
 
 require "togglefy/services/bulk_toggler"
 
-# The Togglefy module serves as the namespace for the gem.
 module Togglefy
   # The ScopedBulkWrapper class provides a wrapper for performing bulk operations
   # on a specific class using the BulkToggler service.

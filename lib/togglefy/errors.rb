@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# The Togglefy module serves as the namespace for the gem.
 # This file loads all custom exception classes used in the Togglefy gem.
 require "togglefy/errors/error"
 

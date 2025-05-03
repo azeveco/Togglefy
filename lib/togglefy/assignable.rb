@@ -2,7 +2,6 @@
 
 require "active_support/concern"
 
-# The Togglefy module serves as the namespace for the gem.
 module Togglefy
   # The Assignable module provides functionality for models to relate with features.
   # It includes methods to add, remove, and query features, as well as ActiveRecord scopes.
