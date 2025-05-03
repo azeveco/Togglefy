@@ -1,7 +1,13 @@
 # Togglefy
 
-![Gem](https://img.shields.io/gem/v/togglefy)
-![Downloads](https://img.shields.io/gem/dt/togglefy)
+[![Gem](https://img.shields.io/gem/v/togglefy)](https://rubygems.org/gems/togglefy)
+[![CI](https://github.com/azeveco/Togglefy/actions/workflows/ci.yml/badge.svg)](https://github.com/azeveco/Togglefy/actions/workflows/ci.yml)
+[![Downloads](https://img.shields.io/gem/dt/togglefy)](https://rubygems.org/gems/togglefy)
+[![License](https://img.shields.io/badge/license-MIT-yellowgreen.svg)](#license)
+
+[![GitHub](https://img.shields.io/badge/github-azeveco/Togglefy-blue.svg)](http://github.com/azeveco/Togglefy)
+[![Documentation](https://img.shields.io/badge/docs-rdoc.info-yellow.svg)](https://rubydoc.info/github/azeveco/Togglefy/main)
+
 
 Togglefy is a simple feature management solution to help you control which features an user or a group has access to.
 
@@ -11,8 +17,8 @@ Togglefy is free, open source and you are welcome to help build it.
 
 Add the gem manually to your Gemfile:
 
-```gemfile
-gem 'togglefy', '~> 1.0', '>= 1.1.1'
+```ruby
+gem "togglefy", "~> 1.2"
 ```
 
 Or install it and add to the application's Gemfile by executing:
@@ -39,33 +45,7 @@ rails generate togglefy:install
 
 This command will create the migrations to create the tables inside your project.
 
-If you use an older version of Rails (< 5), then the migration files don't need you to specify the version.
-
-To fix this, you will have to manually go to the two migration files of Togglefy: `create_feature` and `create_feature_assignments` and do the following:
-
-Change these lines from this:
-
-```ruby
-rails_version = "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
-
-class CreateTogglefyFeatures < ActiveRecord::Migration[rails_version]
-```
-
-```ruby
-rails_version = "#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}"
-
-class CreateTogglefyFeatureAssignments < ActiveRecord::Migration[rails_version]
-```
-
-To this:
-
-```ruby
-class CreateTogglefyFeatures < ActiveRecord::Migration
-```
-
-```ruby
-class CreateTogglefyFeatureAssignments < ActiveRecord::Migration
-```
+Make sure that the migration `CreateTogglefyFeatureAssignments` have the correct data type for the assignable (table/model) that you're going to use.
 
 Please, don't remove/change anything else that's there or Togglefy may not work as expected.
 
@@ -146,16 +126,18 @@ The identifier is the name, downcased and snake_cased 🐍
 Whenever you create a `Togglefy::Feature`, you can expect something like this:
 
 ```ruby
-id: 1,
-name: "Super Powers",
-identifier: "super_powers",
-description: "With great power comes great responsibility",
-created_at: "2025-04-12 01:39:10.176561000 +0000",
-updated_at: "2025-04-12 01:39:46.818928000 +0000",
-tenant_id: "123abc",
-group: "admin",
-environment: "production",
-status: "inactive"
+{
+  id: 1,
+  name: "Super Powers",
+  identifier: "super_powers",
+  description: "With great power comes great responsibility",
+  created_at: "2025-04-12 01:39:10.176561000 +0000",
+  updated_at: "2025-04-12 01:39:46.818928000 +0000",
+  tenant_id: "123abc",
+  group: "admin",
+  environment: "production",
+  status: "inactive"
+}
 ```
 
 #### Updating a Feature
@@ -218,6 +200,7 @@ You can change the status by:
 * Sending a value during creation
 * Updating the column
 * Doing a:
+
   ```ruby
   Togglefy::Feature.find_by(identifier: :super_powers).active!
   Togglefy.feature(:super_powers).active!
@@ -275,18 +258,18 @@ Doing that is simple! Let's assume that your assignable is an User model.
 
 ```ruby
 Togglefy.mass_for(User).bulk.enable(:super_powers) # To enable a specific feature to all users
-Togglefy.mass_for(User).bulk.enable([:super_powers, :magic, ...]) # To enable two or more features to all users
+Togglefy.mass_for(User).bulk.enable([:super_powers, :magic]) # To enable two or more features to all users
 Togglefy.mass_for(User).bulk.enable(:super_powers, percentage: 20) # To enable a feature to 20% of all users
-Togglefy.mass_for(User).bulk.enable([:super_powers, :magic, ...], percentage: 50) # To enable two or more features to 50% of all users
+Togglefy.mass_for(User).bulk.enable([:super_powers, :magic], percentage: 50) # To enable two or more features to 50% of all users
 ```
 
 The same applies to the disable:
 
 ```ruby
 Togglefy.mass_for(User).bulk.disable(:super_powers) # To disable a specific feature to all users
-Togglefy.mass_for(User).bulk.disable([:super_powers, :magic, ...]) # To disable two or more features to all users
+Togglefy.mass_for(User).bulk.disable([:super_powers, :magic]) # To disable two or more features to all users
 Togglefy.mass_for(User).bulk.disable(:super_powers, percentage: 5) # To disable a feature to 5% of all users
-Togglefy.mass_for(User).bulk.disable([:super_powers, :magic, ...], percentage: 75) # To disable two or more features to 75% of all users
+Togglefy.mass_for(User).bulk.disable([:super_powers, :magic], percentage: 75) # To disable two or more features to 75% of all users
 ```
 
 There are a few things to pay attention:
@@ -337,7 +320,7 @@ This will query me all `Togglefy::Feature`s that belongs to group admin and the 
 The `Togglefy.for_filters` can have the following filters:
 
 ```ruby
-filters: {
+{
   group:,
   role:, # Acts as a group, explained in the Aliases section
   environment:,
