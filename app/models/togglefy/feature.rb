@@ -78,6 +78,10 @@ module Togglefy
     # Validations
     # Validates the presence and uniqueness of the name and identifier attributes.
     validates :name, :identifier, presence: true, uniqueness: true
+    validates :identifier, format: {
+      with: /\A[a-z]+(_[a-z]+)*\z/,
+      message: "must be in snake_case (lowercase letters and underscores only)"
+    }
 
     private
 

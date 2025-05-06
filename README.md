@@ -192,7 +192,7 @@ The status holds the `inactive` or `active` values. This status is not to define
 It's up to you to define how you will implement it.
 
 * Is it disabled? Then this feature is likely unrelease
-* Or maybe if it is disabled, you can see the flag to active to an assignable but can't change the values?
+* Or maybe if it is inactive, it means that the feature is unavailable for some reason? Maintenance? 
 
 Again, it's up to you!
 
