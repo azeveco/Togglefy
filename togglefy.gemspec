@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name = "togglefy"
   spec.version = Togglefy::VERSION
   spec.authors = ["Gabriel Azevedo"]
-  spec.email = ["gazeveco@gmail.com"]
+  spec.email = ["gabriel@azeveco.com"]
 
   spec.summary = "Simple and open source Feature Management."
   spec.description = "Togglefy is a feature management Rails gem to help you control which features an user or a group has access to."
@@ -19,6 +19,8 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/azeveco/Togglefy"
   spec.metadata["changelog_uri"] = "https://github.com/azeveco/Togglefy/releases"
+  spec.metadata['bug_tracker_uri'] = 'https://github.com/azeveco/Togglefy/issues'
+  spec.metadata['documentation_uri'] = 'https://rubydoc.info/github/azeveco/Togglefy'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
@@ -37,4 +39,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rails", "~> 8.0.2"
   spec.add_development_dependency "rspec-rails", "~> 7.1.1"
   spec.add_development_dependency "sqlite3", "~> 2.1"
+  spec.add_development_dependency "yard", "~> 0.9.37"
+  spec.add_development_dependency "redcarpet", "~> 3.6"
 end
