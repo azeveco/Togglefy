@@ -20,10 +20,6 @@ module Togglefy
     #   @return [ActiveRecord::Relation] The feature assignments associated with this feature.
     has_many :feature_assignments, dependent: :destroy
 
-    # @!attribute [rw] assignables
-    #   @return [ActiveRecord::Relation] The assignables associated with this feature through feature assignments.
-    has_many :assignables, through: :feature_assignments, source: :assignable
-
     # Callbacks
     # Builds an identifier for the feature before validation if the name is present and identifier is blank.
     before_validation :build_identifier, if: proc { |f| f.name.present? && f.identifier.blank? }
@@ -79,9 +75,32 @@ module Togglefy
     # Validates the presence and uniqueness of the name and identifier attributes.
     validates :name, :identifier, presence: true, uniqueness: true
     validates :identifier, format: {
-      with: /\A[a-z]+(_[a-z]+)*\z/,
+      with: /\A[a-z]+(_[a-z0-9]+)*\z/,
       message: "must be in snake_case (lowercase letters and underscores only)"
     }
+
+    # This method retrieves all assignables linked to the feature through feature assignments.
+    # @return [ActiveRecord::Relation] The assignables associated with the feature.
+    # @example
+    #   feature.assignables
+    #   Togglefy.feature(:super_powers).assignables
+    #   Togglefy::Feature.find_by(identifier: :super_powers).assignables
+    # @note This method includes all assignables, regardless of their class.
+    def assignables
+      feature_assignments.includes(:assignable).map(&:assignable)
+    end
+
+    # This method retrieves assignables of a specific class linked to the feature through feature assignments.
+    # @param klass [String, Class] The class name or class of the assignable class.
+    # @return [ActiveRecord::Relation] The assignables of the specified class associated with the feature.
+    # @example
+    #   feature.assignables_for_klass("User")
+    #   feature.assignables_for_klass(User)
+    #   Togglefy.feature(:super_powers).assignables_for_klass(User)
+    #   Togglefy::Feature.find_by(identifier: :super_powers).assignables_for_klass(User)
+    def assignables_for_type(klass)
+      feature_assignments.includes(:assignable).where(assignable_klass: klass.to_s).map(&:assignable)
+    end
 
     private
 
