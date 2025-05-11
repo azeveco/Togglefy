@@ -8,6 +8,7 @@ require "togglefy/feature_assignable_manager"
 require "togglefy/feature_manager"
 require "togglefy/feature_query"
 require "togglefy/scoped_bulk_wrapper"
+require "togglefy/analytics"
 require "togglefy/exceptions"
 
 module Togglefy
@@ -91,6 +92,11 @@ module Togglefy
   # ScopedBulkWrapper
   def self.mass_for(klass)
     Togglefy::ScopedBulkWrapper.new(klass)
+  end
+
+  # TogglefyAnalytics
+  def self.analytics_for(identifier)
+    Analytics.new(identifier).track
   end
 
   class << self

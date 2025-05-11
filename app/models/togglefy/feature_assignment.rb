@@ -6,5 +6,6 @@ module Togglefy
     belongs_to :assignable, polymorphic: true
 
     scope :for_type, ->(klass) { where(assignable_type: klass.to_s) }
+    scope :feature, ->(feature_id) { where(feature_id: feature_id) }
   end
 end
