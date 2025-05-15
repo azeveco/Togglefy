@@ -39,7 +39,7 @@ module Togglefy
     # @param identifier [Symbol, String] The identifier of the feature.
     # @return [Boolean] True if the feature exists, false otherwise.
     def feature?(identifier)
-      features.exists?(identifier: identifier.to_s)
+      features.active.exists?(identifier: identifier.to_s)
     end
     alias has_feature? feature?
 
