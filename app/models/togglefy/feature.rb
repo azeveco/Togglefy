@@ -99,7 +99,7 @@ module Togglefy
     #   Togglefy.feature(:super_powers).assignables_for_klass(User)
     #   Togglefy::Feature.find_by(identifier: :super_powers).assignables_for_klass(User)
     def assignables_for_type(klass)
-      feature_assignments.includes(:assignable).where(assignable_klass: klass.to_s).map(&:assignable)
+      feature_assignments.includes(:assignable).where(assignable_type: klass.to_s).map(&:assignable)
     end
 
     private
