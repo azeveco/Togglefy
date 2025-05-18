@@ -1,0 +1,24 @@
+---
+title: Including It
+description: Learn how to include Togglefy to use it
+---
+
+Now that **Togglefy** is properly installed, we need to setup the Assignable.
+
+## Including in the Assignable
+
+Add the following to the model that will hold the relation with the features. It can be an `User`, `Account` or something else. It's up to you:
+
+```ruby
+include Togglefy::Assignable
+```
+
+This will add the relationship between Togglefy's models and yours. Yours will be referred to as **Assignable** throughout this documentation.
+
+If you want to check it in the source code, you can find it here: `lib/togglefy/assignable.rb` inside the `included` block.
+
+:::caution
+Older versions of Togglefy (`<= 1.0.2`) had the `Featureable` instead of the `Assignable`. The `Featureable` is now deprecated. You can still use it and it won't impact old users yet, but we highly recommend you to use the `Assignable` as it is semantically more accurate about what it does.
+:::
+
+With that, everything is ready to use **Togglefy**, welcome!

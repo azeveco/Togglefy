@@ -1,0 +1,307 @@
+---
+title: Togglefy::FeatureManager
+description: Technical reference of the FeatureManager API
+---
+
+The `Togglefy::FeatureManager` class provides methods to manage features, including creating, updating, deleting and toggling their status.
+
+For all methods here, excpet the create, you need to initialize the feature by passing the identifier before you can actually call the method.
+
+See the examples on each method.
+
+## Methods
+
+### create
+
+**Description**
+
+---
+
+Create a new feature.
+
+**Alias**
+
+---
+
+```ruby
+create_feature
+```
+
+**Parameters**
+
+---
+
+:::note
+This API uses keyword arguments.
+:::
+
+```ruby
+name: String # Required
+identifier: Symbol, String, nil
+description: String, nil
+group: String, Symbol, nil
+environment: String, Symbol, nil
+tenant_id: String, nil
+status: String, Symbol, Integer, nil # Default to 0 or inactive
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.create(
+  name: "Teleportation",
+  description: "Allows the assignable to teleport to anywhere",
+  group: :jumper,
+  status: :active
+)
+
+Togglefy.create_feature(
+  name: "Magic",
+  identifier: :wizardry,
+  description: "You're a Wizard, Harry"
+)
+
+Togglefy.create(
+  name: "Super Powers",
+  description: "With great power comes great responsibility", 
+  tenant_id: "123abc",
+  group: :admin,
+  environment: :production
+)
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::Feature
+```
+
+### update
+
+**Description**
+
+---
+
+Update an existing feature.
+
+**Alias**
+
+---
+
+```ruby
+update_feature
+```
+
+**Parameters**
+
+---
+
+:::note
+This API uses keyword arguments.
+
+You need to pass the identifier of the feature you want to update as a positional argument. It should be the first parameter.
+
+After that, you can pass the parameters you want to update as keyword arguments.
+:::
+
+First parameter, which is positional:
+```ruby
+identifier: Symbol, String
+```
+
+Other parameters, which are keyword arguments:
+```ruby
+name: String # Required
+identifier: Symbol, String, nil
+description: String, nil
+group: String, Symbol, nil
+environment: String, Symbol, nil
+tenant_id: String, nil
+status: String, Symbol, Integer, nil # Default to 0 or inactive
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.update(:teleportation, name: "Teleportation 2.0", identifier: :teleportation_2)
+Togglefy.update_feature(:teleportation, status: :inactive)
+Togglefy.update(:teleportation, status: :active, group: :powers)
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::Feature
+```
+
+### destroy
+
+**Description**
+
+---
+
+Delete a feature.
+
+**Alias**
+
+---
+
+```ruby
+destroy_feature
+```
+
+**Parameters**
+
+---
+
+```ruby
+identifier: Symbol, String
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.destroy(:teleportation)
+Togglefy.destroy_feature(:teleportation)
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::Feature
+```
+
+### toggle
+
+**Description**
+
+---
+
+Toggle the status of a feature.
+
+**Alias**
+
+---
+
+```ruby
+toggle_feature
+```
+
+**Parameters**
+
+---
+
+```ruby
+identifier: Symbol, String
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.toggle(:teleportation)
+Togglefy.toggle_feature(:teleportation)
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::Feature
+```
+
+### active!
+
+**Description**
+
+---
+
+Set the status of a feature to active.
+
+**Alias**
+
+---
+
+```ruby
+activate_feature
+```
+
+**Parameters**
+
+---
+
+```ruby
+identifier: Symbol, String
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.active!(:teleportation)
+Togglefy.activate_feature(:teleportation)
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::Feature
+```
+
+### inactive!
+
+**Description**
+
+---
+
+Set the status of a feature to inactive.
+
+**Alias**
+
+---
+
+```ruby
+inactivate_feature
+```
+
+**Parameters**
+
+---
+
+```ruby
+identifier: Symbol, String
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.inactive!(:teleportation)
+Togglefy.inactivate_feature(:teleportation)
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::Feature
+```

@@ -1,0 +1,175 @@
+---
+title: Models
+description: Learn about Togglefy's models
+---
+
+Togglefy adds two essential models/tables to deal with feature toggle. The tables were added to the database when the migrations were ran [here](../../getting-started/#running-the-migrations).
+
+## Togglefy::Feature
+
+The first model is called `Togglefy::Feature`.
+
+It's the model that will have all the features of your application.
+
+### Structure
+
+```ruby
+id: integer
+name: string, null: false
+identifier: string
+description: string
+group: string
+environment: string
+tenant_id: string
+status: integer
+created_at: datetime
+updated_at: datetime
+```
+
+### Associations
+
+The `Togglefy::Feature` has the following associations:
+
+```ruby
+has_many :feature_assignments, dependent: :destroy
+has_many :assignables, through: :feature_assignments, source: :assignable
+```
+
+### Scopes
+
+Scopes here are defined to query `Togglefy::Features`.
+
+We won't explain much here, as this is covered inside the `FeatureQuery` section of the documentation.
+
+```ruby
+scope :identifier # Finds features by their identifier
+scope :for_group # Finds features by their group
+scope :without_group # Finds features with group == nil
+scope :for_environment # Finds features by their environment
+scope :without_environment # Finds features with environment == nil
+scope :for_tenant # Finds features by their tenant_id
+scope :without_tenant # Finds features with tenant_id == nil
+scope :inactive # Finds features by inactive status
+scope :active # Finds features by active status
+scope :with_status # Finds features by status
+```
+
+
+### Building identifier
+
+The `identifier` is a string, which is built if not sent. It must be snake_case.
+
+```ruby
+def build_identifier
+  self.identifier = name.underscore.parameterize(separator: "_")
+end
+```
+
+### Status
+
+As you can see, the `Togglefy::Feature` also has a status and it is default to `inactive`. You can change this during creation.
+
+The status of a `Togglefy::Feature` should not be interpreted as if the Assignable has the feature.
+
+The status holds the `inactive` or `active` values. This status is not to define if an Assignable (any model that has the `include Togglefy::Assignable`) either has or doesn't have a feature, but to decide if this feature is available system/application-wide.
+
+It's up to you to define how you will implement it:
+* Is it inactive? Then this feature is likely unreleased
+* Or maybe if it is inactive, it means that the feature is unavailable for some reason? Maintenance? 
+
+Again, it's up to you!
+
+The `status` can be:
+
+```ruby
+:inactive || "inactive" || 0
+:active || "active" || 1
+```
+
+## Togglefy::FeatureAssignment
+
+The `Togglefy::FeatureAssignment` model holds the relation between the `Togglefy::Feature` and the `Assignable`.
+
+It's there to specify if an `Assignable` has a feature or not. If it does, then it has a `Togglefy::FeatureAssignment` record that holds the `Assignable` ID and the feature ID.
+
+### Structure
+
+```ruby
+feature_id: integer, null: false
+assignable_id: depends, null: false
+assignable_type: string, null: false
+created_at: datetime, null: false
+updated_at: datetime, null: false
+```
+
+### Associations
+
+The `Togglefy::FeatureAssignment` has the following associations:
+
+```ruby
+belongs_to :feature, class_name: "Togglefy::Feature"
+belongs_to :assignable, polymorphic: true
+```
+
+As you can see, the `assignable` is `polymorphic`, which means you can make multiple models hold the `Togglefy::Assignable`:
+
+```ruby
+include Togglefy::Assignable
+```
+
+This way, a `User` can have many features, an `Account`, a `Party`, a `Subscription` and so on.
+
+### Scopes
+
+Only one, to list all `Togglefy::FeatureAssignment` by `Assignable` class.
+
+```ruby
+scope :for_type
+```
+
+## Togglefy::Assignable
+
+Not a model per se, but a `ActiveSupport::Concern`. You include it inside the models and that's why we're here.
+
+The `Togglefy::Assignable` is what will setup the essentials between `Togglefy::Feature` and `Togglefy::FeatureAssignment`.
+
+This is what turns a model into an `Assignable`.
+
+### Include
+
+As mentioned multiple times before, you turn something into an `Assignable` by including this inside the model:
+
+```ruby
+include Togglefy::Assignable
+```
+
+### Associations
+
+The `Togglefy::Assignable` has the following associations:
+
+```ruby
+has_many :feature_assignments, as: :assignable, class_name: "Togglefy::FeatureAssignment"
+has_many :features, through: :feature_assignments, class_name: "Togglefy::Feature"
+```
+
+As you can see, an `Assignable` has many features. That's essential to us. That's the root of everything.
+
+### Scopes
+
+There's also a few scopes that help us achieve greatness, like:
+
+```ruby
+scope :with_features # Retrieve assignables with specific features
+scope :without_features # Retrieve assignables without specific features
+```
+
+### Methods
+
+Here are defined methods to manage the relation between `Assignable` and `Togglefy::Feature`. We won't explain much here, as this is covered inside the `FeatureManager` section of the documentation.
+
+```ruby
+def feature?(identifier); end
+def add_feature(feature); end
+def remove_feature(feature); end
+def clear_features; end
+```

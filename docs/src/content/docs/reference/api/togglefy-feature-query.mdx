@@ -1,0 +1,418 @@
+---
+title: Togglefy::FeatureQuery
+description: Technical reference of the FeatureQuery API
+---
+
+The `Togglefy::FeatureQuery` class provides methods to query features based on various filters.
+
+## Constants
+
+| Name | Description |
+|------|-------------|
+| `FILTERS` | Mapping of filter keys to their corresponding query scopes.<br />Available keys: `identifier`, `group`/`role`, `environment`/`env`, `tenant_id`, `status` |
+
+## Methods
+
+### features
+
+**Description**
+
+---
+
+Get all features.
+
+**Usage**
+
+---
+
+```ruby
+Togglefy.features
+```
+
+**Return**
+
+---
+
+```ruby
+ActiveRecord::Relation
+```
+
+### feature
+
+**Description**
+
+---
+
+Find feature(s) by identifier.
+
+**Parameters**
+
+---
+
+```ruby
+identifier: Symbol || String || Array(String || Symbol)
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.feature(:feature_name)
+Togglefy.feature("feature_name")
+Togglefy.feature([ :feature_name_1, "feature_name_2" ])
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::Feature || ActiveRecord::Relation
+```
+
+### for_type
+
+**Description**
+
+---
+
+Get feature assignments for an Assignable type.
+
+**Parameters**
+
+---
+
+```ruby
+klass: Class
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.for_type(User) # This returns all FeatureAssignment with a User assignable
+```
+
+**Return**
+
+---
+
+```ruby
+ActiveRecord::Relation
+```
+
+### for_group
+
+**Description**
+
+---
+
+Get features of a specific group.
+
+**Alias**
+
+---
+
+```ruby
+for_role
+```
+
+**Parameters**
+
+---
+
+```ruby
+group: Symbol || String
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.for_group(:admin)
+Togglefy.for_role(:admin)
+```
+
+**Return**
+
+---
+
+```ruby
+ActiveRecord::Relation
+```
+
+### without_group
+
+**Description**
+
+---
+
+Get features that do not belong to any group.
+
+**Alias**
+
+---
+
+```ruby
+without_role
+```
+
+**Parameters**
+
+---
+
+```ruby
+None
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.without_group
+Togglefy.without_role
+```
+
+**Return**
+
+---
+
+```ruby
+ActiveRecord::Relation
+```
+
+### for_environment
+
+**Description**
+
+---
+
+Get features of a specific environment.
+
+**Alias**
+
+---
+
+```ruby
+for_env
+```
+
+**Parameters**
+
+---
+
+```ruby
+environment: Symbol || String
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.for_environment(:production)
+Togglefy.for_env(:production)
+```
+
+**Return**
+
+---
+
+```ruby
+ActiveRecord::Relation
+```
+
+### without_environment
+
+**Description**
+
+---
+
+Get features that do not belong to any environment.
+
+**Alias**
+
+---
+
+```ruby
+without_env
+```
+
+**Parameters**
+
+---
+
+```ruby
+None
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.without_environment
+Togglefy.without_env
+```
+
+**Return**
+
+---
+
+```ruby
+ActiveRecord::Relation
+```
+
+### for_tenant
+
+**Description**
+
+---
+
+Get features of a specific tenant.
+
+**Parameters**
+
+---
+
+```ruby
+tenant_id: String
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.for_tenant("123abc456def789ghi0")
+```
+
+**Return**
+
+---
+
+```ruby
+ActiveRecord::Relation
+```
+
+### without_tenant
+
+**Description**
+
+---
+
+Get features that do not belong to any tenant.
+
+**Parameters**
+
+---
+
+```ruby
+None
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.without_tenant
+```
+
+**Return**
+
+---
+
+```ruby
+ActiveRecord::Relation
+```
+
+### with_status
+
+**Description**
+
+---
+
+Get features with a specific status.
+
+**Parameters**
+
+---
+
+```ruby
+status: Symbol || String || Integer
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.with_status(:active)
+Togglefy.with_status("inactive")
+Togglefy.with_status(1)
+```
+
+**Return**
+
+---
+
+```ruby
+ActiveRecord::Relation
+```
+
+### for_filters
+
+**Description**
+
+---
+
+Apply multiple filters to the query features.
+
+**Parameters**
+
+---
+
+:::note
+This API uses keyword arguments to pass the filters.
+:::
+
+Despite the types informed, you can also pass `nil` to filter for features that do not have anything set.
+
+```ruby
+filters: {
+  group: Symbol || String || nil,
+  role: Symbol || String || nil, # Acts as a group
+  environment: Symbol || String || nil,
+  env: Symbol || String || nil, # Acts as environment
+  tenant_id: String || nil,
+  status: Symbol || String || Integer || nil,
+  identifier: Symbol || String || Array(String || Symbol) || nil
+}
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.for_filters(
+  filters: {
+    group: :admin,
+    environment: :production,
+    status: :active
+  }
+)
+```
+
+**Return**
+
+---
+
+```ruby
+ActiveRecord::Relation
+```
