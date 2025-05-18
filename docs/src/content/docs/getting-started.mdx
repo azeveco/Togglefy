@@ -1,0 +1,79 @@
+---
+title: Getting Started
+description: Learn how to install Togglefy
+---
+
+import { Tabs, TabItem, Steps } from '@astrojs/starlight/components';
+
+Togglefy is a simple feature management Rails gem to help you control which features an assignable has access to.
+
+**Togglefy** is free, open source and you are welcome to help build it. Give us a star on [GitHub](https://github.com/azeveco/Togglefy) if you can!
+
+:::caution[Attention]
+Togglefy was built to be Rails/Ruby version proof and tested with both newer and older Rails (`>= 4.2.8`) and newer and older Ruby (`>= 2.4.10`).
+
+This doesn't mean that you won't encounter problems during use if you use an older version. If you do, we'll be glad to hear from you [here](https://github.com/azeveco/Togglefy/issues) and see **if** we can do anything to help.
+:::
+
+## Quick Start
+
+### Installation
+
+<Steps>
+
+1. Add the gem manually to your `Gemfile`:
+
+    ```ruby
+    gem "togglefy", "~> 1.2"
+    ```
+
+    <Steps>
+    1. You can also add it to your `Gemfile` by running:
+        ```bash frame="none"
+        bundle add togglefy
+        ```
+
+    2. Or, if you're not using Bundler for whatever reason:
+        ```bash frame="none"
+        gem install togglefy
+        ```
+    </Steps>
+
+2. After that, simply run the generate command to get the necessary migrations:
+
+    ```bash frame="none"
+    rails generate togglefy:install
+    ```
+
+3. And you're good to go!
+
+</Steps>
+
+This `generate` command will create the migrations to create the tables inside your project.
+
+Please, don't remove/change anything else that's there or Togglefy may not work as expected.
+
+:::tip
+Before running the migrations, make sure that the migration `CreateTogglefyFeatureAssignments` have the correct data type for the `assignable` (table/model) that you're going to use.
+
+Example: if you use `UUID`, check if it will automatically use it. If not, specify it by doing appending a:
+```diff lang="ruby"
+- t.references :assignable, polymorphic: true, null: false
++ t.references :assignable, polymorphic: true, null: false, type: :uuid
+```
+:::
+
+#### Running the migrations
+
+Run the migration to create these in your datase:
+```bash frame="none"
+rails db:migrate
+```
+Or if you're using a legacy codebase:
+```bash frame="none"
+rake db:migrate
+```
+
+The models are stored inside Togglefy, so you don't need to create them inside your project unless you want to.
+
+If that's something you want, you can check them following this path: `app/models/togglefy/`.

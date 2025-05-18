@@ -1,0 +1,89 @@
+---
+title: Managing Assignables <> Features
+description: Learn how to manage the relation between Assignables and Features
+---
+
+Now that we know how to create features, let's check how we can manage the relation between the `Assignables` and the `Togglefy::Feature`.
+
+The `Assignable` < > `Feature` relation is held by the `Togglefy::FeatureAssignment` table/model.
+
+## Direct methods
+
+An `assignable` has some direct methods thanks to the `include Togglefy::Assignable`.
+
+These allow you to do operations right from the `assignable` instead of using `Togglefy` methods.
+
+The direct methods are (and let's use an user as an example of an assignable):
+
+```ruby
+user.has_feature?(:super_powers) # Checks if user has a single feature
+user.add_feature(:super_powers) # Adds a feature to user
+user.remove_feature(:super_powers) # Removes a feature from an user
+user.clear_features # Clears all features from an user
+```
+
+## Using Togglefy
+
+But there's another way to manage Assignables < > Features by using the `FeatureAssignableManager`. It's up to you to decide which one.
+
+But it's important to point that using `Togglefy` is the default, to make sure everything is organized and following a pattern.
+
+Here are the examples:
+
+```ruby
+Togglefy.for(assignable).has?(:super_powers) # Checks if assignable (user || account || anything) has a single feature
+Togglefy.for(assignable).enable(:super_powers) # Enables/adds a feature to an assignable
+Togglefy.for(assignable).disable(:super_powers) # Disables/removes a feature from an assignable
+Togglefy.for(assignable).clear # Clears all features from an assignable
+```
+
+You can also supercharge it by chaining methods, like:
+
+```ruby
+# Instead of doing this:
+Togglefy.for(assignable).disable(:alpha_access)
+Togglefy.for(assignable).enable(:beta_access)
+
+# You can do something like this:
+Togglefy.for(assignable).disable(:alpha_access).enable(:beta_access)
+```
+
+### Mass Enable/Disable of Features to/from Assignables
+You can mass enable/disable features to/from Assignables.
+
+Doing that is simple! Let's assume that your `Assignable` is an User model.
+
+```ruby
+Togglefy.mass_for(User).bulk.enable(:super_powers) # To enable a specific feature to all users
+Togglefy.mass_for(User).bulk.enable([:super_powers, :magic]) # To enable two or more features to all users
+Togglefy.mass_for(User).bulk.enable(:super_powers, percentage: 20) # To enable a feature to 20% of all users
+Togglefy.mass_for(User).bulk.enable([:super_powers, :magic], percentage: 50) # To enable two or more features to 50% of all users
+```
+
+The same applies to the disable:
+
+```ruby
+Togglefy.mass_for(User).bulk.disable(:super_powers) # To disable a specific feature to all users
+Togglefy.mass_for(User).bulk.disable([:super_powers, :magic]) # To disable two or more features to all users
+Togglefy.mass_for(User).bulk.disable(:super_powers, percentage: 5) # To disable a feature to 5% of all users
+Togglefy.mass_for(User).bulk.disable([:super_powers, :magic], percentage: 75) # To disable two or more features to 75% of all users
+```
+
+There are a few things to pay attention:
+* Whenever you do a enable/disable, it will only query for valid assignables, so:
+  * If you do a enable, it will query all assignables that don't have the feature(s) enabled
+  * If you do a disable, it will query all assignables that do already have the feature(s) enabled
+* You can also use filters for:
+  * `group || role`
+  * `environment || env`
+  * `tenant_id`
+  * You can check about filters aliases at [Aliases page](../aliases)
+
+These will be applied to query features that match the identifiers + the filters sent.
+
+So it would be something like:
+
+```ruby
+Togglefy.mass_for(User).bulk.enable(:super_powers, group: :admin, percentage: 20)
+Togglefy.mass_for(User).bulk.disable(:magic, group: :dev, env: :production, percentage: 75)
+```

@@ -1,0 +1,44 @@
+---
+title: Togglefy
+---
+
+import { FileTree } from '@astrojs/starlight/components';
+
+This Togglefy file is the entry point of everything. It's like it is the routes files of the API.
+
+It is located here:
+
+<FileTree>
+- lib
+  - **togglefy.rb**
+- README.md
+- Gemfile
+- togglefy.gemspec
+- ...
+</FileTree>
+
+The `Togglefy` module provides APIs for querying, creating, updating, toggling, and managing features.
+
+It also provides a way to manage features for assignable objects.
+
+## Requires
+
+It is this module that requires many essentials to make Togglefy work:
+
+- `togglefy/version`
+- `togglefy/engine`
+- `togglefy/assignable`
+- `togglefy/feature_manager`
+- `togglefy/feature_assignable_manager`
+- `togglefy/feature_query`
+- `togglefy/scoped_bulk_wrapper`
+- `togglefy/errors`
+
+## APIs
+
+The provided APIs from `Togglefy` involves three classes:
+
+- [Togglefy::FeatureQuery](../togglefy-feature-query): to query features
+- [Togglefy::FeatureManager](../togglefy-feature-manager): to manage features (status, create, update, etc)
+- [Togglefy::FeatureAssignableManager](../togglefy-feature-assignable-manager): to manage the relation between feature and assignables
+- [Togglefy::ScopedBulkWrapper](../togglefy-scoped-bulk-wrapper): to trigger bulk/mass operations

@@ -1,0 +1,146 @@
+---
+title: Querying Features
+description: Learn how to query Features
+---
+
+Remember when I told you a looooong time ago that using `Togglefy` for operations is the default using by the gem? If you don't, no worries. It was a really loooong time ago, like `1.minute.ago`.
+
+It's actually pretty simple. Each line of each code block will show you a way to query to achieve the same result in the context. You **don't** need to use all of options listed in each code block.
+
+## Querying Features (plural)
+
+To query `Togglefy::Feature` from a specific group (the same applies to environment and tenant), you would do something like this:
+
+```ruby
+Togglefy::Feature.where(group: :dev)
+Togglefy::Feature.for_group(:dev)
+Togglefy.for_group(:dev)
+Togglefy.for_role(:dev)
+Togglefy.for_filters(filters: {group: :dev})
+Togglefy.for_filters(filter: {role: :dev})
+```
+
+The `for_filters` is recommended when you want to use more than one filter, like:
+
+```ruby
+Togglefy.for_filters(filters: {group: :admin, environment: :production})
+```
+
+This will query me all `Togglefy::Feature`s that belongs to group admin and the production environment.
+
+The `Togglefy.for_filters` can have the following filters:
+
+```ruby
+{
+  group:,
+  role:, # Acts as a group, explained in the Aliases section
+  environment:,
+  env:, # Acts as a group, explained in the Aliases section
+  tenant_id:,
+  status:,
+  identifier:
+}
+```
+
+The `Togglefy.for_filters` will only apply the filters sent that are `nil` or `!value.blank?`.
+
+You can send `nil` values too, like:
+
+```ruby
+Togglefy.for_tenant(nil) # This will query me all Togglefy::Features with tenant_id nil
+
+Togglefy.for_filters(filters: {group: :admin, environment: nil, tenant_id: nil})
+```
+
+There's also another way to filter for `nil` values:
+
+```ruby
+Togglefy.without_group
+Togglefy.without_role
+
+Togglefy.without_environment
+Togglefy.without_env
+
+Togglefy.without_tenant
+```
+
+## Querying by Status
+
+To query Togglefy::Features by status (the same applies to inactive).
+
+```ruby
+Togglefy::Feature.where(status: :active)
+Togglefy::Feature.active
+Togglefy.with_status(:active)
+```
+
+## Finding a specific feature
+
+```ruby
+Togglefy.feature(:super_powers)
+Togglefy::Feature.identifier(:super_powers)
+Togglefy::Feature.find_by(identifier: :super_powers)
+```
+
+## Finding multiple features
+
+```ruby
+Togglefy.feature([:super_powers, :magic])
+Togglefy::Feature.identifier([:super_powers, :magic])
+Togglefy::Feature.where(identifier: [:super_powers, :magic])
+```
+
+## List all features of an Assignable
+Let's pretend that your assignable is an User.
+
+```ruby
+user = User.find(1)
+user.features
+```
+
+## Check all features an Assignable have/doesn't have
+Again, let's pretend that your assignable is an User. This is the only case you need to send the feature id and not the identifier.
+
+```ruby
+User.with_features(1)
+User.with_features([2, 3])
+User.without_features(1)
+User.without_features([2, 3])
+```
+
+## Querying all features
+```ruby
+Togglefy.features
+Togglefy::Feature.all
+```
+
+## Querying all features enabled to a klass
+Let's assume that you have two different assignables: User and Account.
+
+You want to list all features being used by assignables of User type:
+
+```ruby
+Togglefy.for_type(User) # This returns all current FeatureAssignment with a User assignable
+```
+
+## Aliases
+
+By the way, did you notice that I wrote `group` and `role` to get group?
+
+There are aliases for both group and environment that can be used outside of `Togglefy::Feature`. If you want to query `Togglefy::Feature` directly, use only the default name.
+* `group` can be written as `role` outside of `Togglefy::Feature`
+* `environment` can be written as `env` out side of `Togglefy::Feature`
+
+You can check a table for all [Aliases](../aliases) here.
+
+```ruby
+Togglefy.for_group(:dev)
+Togglefy.for_role(:dev)
+Togglefy.for_filters(filters: {group: :dev})
+Togglefy.for_filters(filter: {role: :dev})
+
+Togglefy.for_environment(:production)
+Togglefy.for_env(:production)
+Togglefy.for_filters(filters: {environment: :production})
+Togglefy.for_filters(filter: {env: :production})
+```
