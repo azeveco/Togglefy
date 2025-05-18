@@ -7,9 +7,9 @@
 [![Downloads](https://img.shields.io/gem/dt/togglefy)](https://rubygems.org/gems/togglefy)
 [![License](https://img.shields.io/badge/license-MIT-yellowgreen.svg)](#license)
 
-[![Official Documentation](https://img.shields.io/badge/docs-Togglefy-blue.svg)](https://togglefy.azeveco.com)
+[![Official Documentation](https://img.shields.io/badge/Official_Docs-Togglefy-blue.svg)](https://togglefy.azeveco.com)
 [![GitHub](https://img.shields.io/badge/github-azeveco/Togglefy-blue.svg)](https://github.com/azeveco/Togglefy)
-[![YARD Documentation](https://img.shields.io/badge/docs-rdoc.info-yellow.svg)](https://rubydoc.info/github/azeveco/Togglefy/main)
+[![YARD Documentation](https://img.shields.io/badge/YARD_docs-rdoc.info-yellow.svg)](https://rubydoc.info/github/azeveco/Togglefy/main)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/azeveco/Togglefy)
 
 Togglefy is a simple feature management solution to help you control which features an user or a group has access to.
