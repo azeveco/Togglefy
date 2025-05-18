@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir.glob("lib/**/*") +
                Dir.glob("app/**/*") +
                Dir.glob("config/**/*") +
-               %w[LICENSE.txt README.md Rakefile togglefy.gemspec]
+               %w[LICENSE README.md Rakefile togglefy.gemspec]
 
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
