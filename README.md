@@ -5,8 +5,9 @@
 [![Downloads](https://img.shields.io/gem/dt/togglefy)](https://rubygems.org/gems/togglefy)
 [![License](https://img.shields.io/badge/license-MIT-yellowgreen.svg)](#license)
 
-[![GitHub](https://img.shields.io/badge/github-azeveco/Togglefy-blue.svg)](http://github.com/azeveco/Togglefy)
-[![Documentation](https://img.shields.io/badge/docs-rdoc.info-yellow.svg)](https://rubydoc.info/github/azeveco/Togglefy/main)
+[![Documentation](https://img.shields.io/badge/docs-Togglefy-blue.svg)](https://togglefy.azeveco.com)
+[![GitHub](https://img.shields.io/badge/github-azeveco/Togglefy-blue.svg)](https://github.com/azeveco/Togglefy)
+[![YARD Documentation](https://img.shields.io/badge/docs-rdoc.info-yellow.svg)](https://rubydoc.info/github/azeveco/Togglefy/main)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/azeveco/Togglefy)
 
 Togglefy is a simple feature management solution to help you control which features an user or a group has access to.
@@ -19,6 +20,7 @@ Add the gem manually to your Gemfile:
 
 ```ruby
 gem "togglefy", "~> 1.2.1"
+```
 
 Or install it and add to the application's Gemfile by executing:
 
