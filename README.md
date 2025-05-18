@@ -19,6 +19,7 @@ Add the gem manually to your Gemfile:
 
 ```ruby
 gem "togglefy", "~> 1.2.1"
+```
 
 Or install it and add to the application's Gemfile by executing:
 
