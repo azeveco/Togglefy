@@ -35,8 +35,11 @@ export default defineConfig({
       credits: true,
       title: 'Togglefy',
       lastUpdated: true,
-      favicon: './src/assets/togglefy_icon.svg',
-      social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/azeveco/Togglefy' }],
+      favicon: 'favicon.svg',
+      social: [
+        { icon: 'seti:ruby', label: 'RubyGems', href: 'https://rubygems.org/gems/togglefy' },
+        { icon: 'github', label: 'GitHub', href: 'https://github.com/azeveco/Togglefy' }
+      ],
       plugins: [
         starlightLinksValidator({
           errorOnRelativeLinks: false,
@@ -92,18 +95,18 @@ export default defineConfig({
                   label: 'Structure',
                   items: [
                     { label: 'Models', slug: 'reference/structure/models' },
-                    { 
-                      label: 'Togglefy::Assignable', 
-                      slug: 'reference/structure/togglefy-assignable', 
+                    {
+                      label: 'Togglefy::Assignable',
+                      slug: 'reference/structure/togglefy-assignable',
                       badge: { text: 'WIP', variant: 'caution' }
                     },
-                    { 
-                      label: 'Togglefy::Feature', 
+                    {
+                      label: 'Togglefy::Feature',
                       slug: 'reference/structure/togglefy-feature',
                       badge: { text: 'WIP', variant: 'caution' }
                     },
-                    { 
-                      label: 'Togglefy::FeatureAssignment', 
+                    {
+                      label: 'Togglefy::FeatureAssignment',
                       slug: 'reference/structure/togglefy-feature-assignments',
                       badge: { text: 'WIP', variant: 'caution' }
                     },
