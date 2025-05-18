@@ -11,9 +11,9 @@ export default defineConfig({
   integrations: [
     starlight({
       tableOfContents: { maxHeadingLevel: 4 },
-      // editLink: {
-      //   baseUrl: 'https://github.com/azeveco/Togglefy/edit/main/docs/',
-      // },
+      editLink: {
+        baseUrl: 'https://github.com/azeveco/Togglefy/edit/main/docs/',
+      },
       customCss: [
         '@fontsource/montserrat/400.css',
         '@fontsource/montserrat/600.css',
