@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = "https://github.com/azeveco/Togglefy"
   spec.metadata["changelog_uri"] = "https://github.com/azeveco/Togglefy/releases"
   spec.metadata['bug_tracker_uri'] = 'https://github.com/azeveco/Togglefy/issues'
-  spec.metadata['documentation_uri'] = 'https://rubydoc.info/github/azeveco/Togglefy'
+  spec.metadata['documentation_uri'] = 'https://togglefy.azeveco.com'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
