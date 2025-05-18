@@ -1,0 +1,195 @@
+---
+title: Togglefy::ScopedBulkWrapper
+description: About the ScopedBulkWrapper, the module responsible for mass/bulk operations
+---
+
+The `Togglefy::ScopedBulkWrapper` module serve as a wrapper for mass/bulk operations.
+
+Inside it, there's only `Togglefy::BulkToggler` class so far, which is responsible for enabling or disabling features to many Assignable objects at once. It provides a convenient way to perform these operations without the need for individual updates.
+
+:::note
+For the methods here, you need to initialize the Assignable class before you can actually call the methods.
+:::
+
+## Methods
+
+### mass_for
+
+**Description**
+
+---
+
+The [`Togglefy::ScopedBulkWrapper`](#togglefyscopedbulkwrapper) class, to make use of mass/bulk operations.
+
+**Parameters**
+
+---
+
+```ruby
+assignable: Assignable # Required
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.mass_for(Assignable)
+
+# Let's assume the assignable is a User class.
+Togglefy.mass_for(User)
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::ScopedBulkWrapper
+```
+
+### bulk
+
+**Description**
+
+---
+
+The `bulk` method is used to create a new instance of the [`Togglefy::BulkToggler`](#togglefybulktoggler) class for a Assignable class.
+
+After creating the instance, you can use it to enable or disable features for multiple assignable objects.
+
+**Parameters**
+
+---
+
+You can only get to this method by calling [`mass_for`](#mass_for) first. Which means you already have the only parameter: `Assignable` class.
+
+This parameter is already sent through the [`mass_for`](#mass_for) method.
+
+**Usage Examples**
+
+---
+
+```ruby
+# Let's assume the assignable is a User class.
+Togglefy.mass_for(User).bulk
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::BulkToggler
+```
+
+## Togglefy::BulkToggler
+
+The `Togglefy::BulkToggler` class is responsible for enabling or disabling features to many Assignable objects at once. It provides a convenient way to perform these operations without the need for individual updates.
+
+Whenever you do a enable/disable, it will only query for valid assignables, so:
+- If you do a enable, it will query all assignables that don't have the feature(s) enabled
+- If you do a disable, it will query all assignables that do already have the feature(s) enabled
+
+This class only has two methods: `enable` and `disable`.
+
+Both methods can receive the same parameters, and they will work the same way.
+
+The parameters are:
+```ruby
+identifiers: Symbol || String || Array(Symbol || String) # Required, positional argument. It should be the first parameter
+group: Symbol || String # Optional
+role: Symbol || String # Alias of group
+environment: Symbol || String # Optional
+env: Symbol || String # Alias of environment
+tenant_id: String # Optional
+percentage: Integer # Optional
+```
+
+:::note
+This API uses keyword arguments.
+
+You need to pass the identifier(s) of the feature(s) you want to update as a positional argument. It should be the first parameter.
+
+After that, you can pass the parameters you want to update as keyword arguments.
+
+You can see the usage examples on each method to get a better understanding of how to use them.
+:::
+
+The `group` and `role` parameters are aliases of each other, and the same goes for `environment` and `env`.
+
+The `percentage` parameter is used to enable the feature for a percentage of the assignables. If sent, it will be used to calculate the percentage of assignables that will have the feature enabled/disabled.
+
+### Methods
+
+#### enable
+
+**Description**
+
+---
+
+Enable a feature for multiple assignable objects.
+
+**Usage Examples**
+
+---
+
+Pay attention that the first parameter is always the identifier(s), which is positional and required. The rest are keyword arguments.
+
+```ruby
+# To enable a specific feature to all users
+Togglefy.mass_for(User).bulk.enable(:super_powers)
+
+# To enable two or more features to all users
+Togglefy.mass_for(User).bulk.enable([:super_powers, :magic])
+
+# To enable a feature to 20% of all users
+Togglefy.mass_for(User).bulk.enable(:super_powers, percentage: 20)
+
+# To enable two or more features to 50% of all users
+Togglefy.mass_for(User).bulk.enable([:super_powers, :magic], percentage: 50)
+```
+
+**Return**
+
+---
+
+```ruby
+true || Togglefy::Error
+```
+
+#### disable
+
+**Description**
+
+---
+
+Disable a feature for multiple assignable objects.
+
+**Usage Examples**
+
+---
+
+Pay attention that the first parameter is always the identifier(s), which is positional and required. The rest are keyword arguments.
+
+```ruby
+# To disable a specific feature to all users
+Togglefy.mass_for(User).bulk.disable(:super_powers)
+
+# To disable two or more features to all users
+Togglefy.mass_for(User).bulk.disable([:super_powers, :magic])
+
+# To disable a feature to 20% of all users
+Togglefy.mass_for(User).bulk.disable(:super_powers, percentage: 20)
+
+# To disable two or more features to 50% of all users
+Togglefy.mass_for(User).bulk.disable([:super_powers, :magic], percentage: 50)
+```
+
+**Return**
+
+---
+
+```ruby
+true || Togglefy::Error
+```

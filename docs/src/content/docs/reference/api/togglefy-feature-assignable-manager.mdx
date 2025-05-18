@@ -1,0 +1,224 @@
+---
+title: Togglefy::FeatureAssignableManager
+description: Technical reference of the FeatureAssignableManager API
+---
+
+The `Togglefy::FeatureAssignableManager` class provides methods to manage and check features for an individual assignable object.
+
+:::note
+For all methods here, you need to initialize the assignable before you can actually call the method.
+:::
+
+See the examples on each method.
+
+## Methods
+
+### for
+
+**Description**
+
+---
+
+This method is used to create a new instance of the `Togglefy::FeatureAssignableManager` class for a specific assignable.
+
+After creating the instance, you can use it to manage and check features for that assignable.
+
+**Parameters**
+
+---
+
+```ruby
+assignable: assignable # Required
+```
+
+**Usage Examples**
+
+---
+
+Let's pretend the assignable is a user object.
+```ruby
+user = User.find(1)
+
+Togglefy.for(user)
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::FeatureAssignableManager
+```
+
+### enable
+
+**Description**
+
+---
+
+Enable a feature for an assignable.
+
+This method will enable the feature for the assignable, regardless of the feature's status.
+
+This is useful for testing or debugging purposes.
+
+This method will not affect the feature's status for other assignables.
+
+**Parameters**
+
+---
+
+```ruby
+identifier: Symbol, String # Required
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+user = User.find(1)
+
+Togglefy.for(user).enable(:teleportation)
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::FeatureAssignableManager
+```
+
+### disable
+
+**Description**
+
+---
+
+Disable a feature for an assignable.
+
+This method will disable the feature for the assignable, regardless of the feature's status.
+
+This is useful for testing or debugging purposes.
+
+This method will not affect the feature's status for other assignables.
+
+**Parameters**
+
+---
+
+```ruby
+identifier: Symbol, String # Required
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+user = User.find(1)
+
+Togglefy.for(user).disable(:teleportation)
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::FeatureAssignableManager
+```
+
+### has?
+
+**Description**
+
+---
+
+Check if a feature is enabled for an assignable.
+
+An assignable has a feature if there's a [`Togglefy::FeatureAssignment`](../../structure/models#togglefyfeatureassignment) record for the assignable and the feature.
+
+It will only check for `Togglefy::Feature` that status is active.
+
+**Parameters**
+
+---
+
+```ruby
+identifier: Symbol, String # Required
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+user = User.find(1)
+
+Togglefy.for(user).has?(:teleportation)
+```
+
+**Return**
+
+---
+
+```ruby
+true || false
+```
+
+### clear
+
+**Description**
+
+---
+
+Clear all features for an assignable.
+
+**Parameters**
+
+---
+
+```ruby
+None
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+user = User.find(1)
+
+Togglefy.for(user).clear
+```
+
+**Return**
+
+---
+
+```ruby
+Togglefy::FeatureAssignableManager
+```
+
+### Chainable Methods
+
+The following methods are chainable, meaning you can call them one after the other.
+
+- [`enable`](#enable)
+- [`disable`](#disable)
+- [`clear`](#clear)
+
+**Usage Examples**
+
+---
+
+```ruby
+# Instead of doing this:
+Togglefy.for(assignable).disable(:alpha_access)
+Togglefy.for(assignable).enable(:beta_access)
+
+# You can go something like this:
+Togglefy.for(assignable).disable(:alpha_access).enable(:beta_access)
+```

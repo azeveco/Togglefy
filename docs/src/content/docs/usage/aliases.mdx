@@ -1,0 +1,23 @@
+---
+title: Aliases
+description: Learn about the aliases of Togglefy
+---
+
+Here's a table of all aliases available on Togglefy.
+
+You can use either, as long as you respect the rules listed.
+
+| Original              | Alias                | Rules                                               |
+| --------------------- | -------------------- | --------------------------------------------------- |
+| `for_group`           | `for_role`           | Can't be used if doing a direct `Togglefy::Feature` |
+| `without_group`       | `without_role`       | Can't be used if doing a direct `Togglefy::Feature` |
+| `for_environment`     | `for_env`            | Can't be used if doing a direct `Togglefy::Feature` |
+| `without_environment` | `without_env`        | Can't be used if doing a direct `Togglefy::Feature` |
+| `group`               | `role`               | Used inside methods that receives filters           |
+| `environment`         | `env`                | Used inside methods that receives filters           |
+| `create`              | `create_feature`     | None                                                |
+| `update`              | `update_feature`     | None                                                |
+| `toggle`              | `toggle_feature`     | None                                                |
+| `active!`             | `activate_feature`   | None                                                |
+| `deactive!`           | `inactivate_feature` | None                                                |
+| `destroy`             | `destroy_feature`    | None                                                |

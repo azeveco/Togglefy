@@ -1,0 +1,11 @@
+--title Togglefy
+--exclude /lib/generators/togglefy/templates/*.rb
+--exclude /docs/
+--main README.md
+--quiet
+--no-cache
+-
+lib/**/*.rb
+app/**/*.rb
+CHANGELOG.md
+LICENSE
