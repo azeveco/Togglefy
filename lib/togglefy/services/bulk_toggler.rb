@@ -26,6 +26,7 @@ module Togglefy
     # @param percentage [Integer] The percentage of assignables to include.
     def enable(identifiers, **filters)
       toggle(:enable, identifiers, filters)
+      true
     end
 
     # Disables features for assignables based on filters.
@@ -40,6 +41,7 @@ module Togglefy
     # @param percentage [Integer] The percentage of assignables to include.
     def disable(identifiers, **filters)
       toggle(:disable, identifiers, filters)
+      true
     end
 
     private

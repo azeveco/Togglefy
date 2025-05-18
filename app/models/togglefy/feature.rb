@@ -26,7 +26,7 @@ module Togglefy
 
     # Scopes
     # Finds features by their identifier.
-    # @param identifier [Symbol, String] The identifier to search for.
+    # @param identifier [Symbol, String, Array<Symbol, String>] The identifier to search for.
     # @return [ActiveRecord::Relation] The features matching the identifier.
     scope :identifier, ->(identifier) { where(identifier: identifier) }
 
