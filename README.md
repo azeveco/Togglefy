@@ -54,7 +54,7 @@ Make sure that the migration `CreateTogglefyFeatureAssignments` have the correct
 
 Please, don't remove/change anything else that's there or Togglefy may not work as expected.
 
-Run the migration to create these in your datase:
+Run the migration to create these in your database:
 
 ```bash
 rails db:migrate
