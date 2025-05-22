@@ -141,7 +141,7 @@ module Togglefy
 
       ActiveRecord::Base.transaction do
         # Togglefy::FeatureAssignment.insert_all(rows)
-        if Rails::VERSION::MAJOR => 6
+        if Rails::VERSION::MAJOR >= 6
           Togglefy::FeatureAssignment.insert_all(rows)
         else
           insert_all(rows)
