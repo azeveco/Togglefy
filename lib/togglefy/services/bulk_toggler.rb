@@ -158,7 +158,7 @@ module Togglefy
     def insert_all(rows)
       sql = <<-SQL
         INSERT INTO togglefy_feature_assignments (assignable_id, assignable_type, feature_id)
-        VALUES (#{rows.map { |row| "(#{row[:assignable_id]}, '#{row[:assignable_type]}', #{row[:feature_id]})" }.join(", ")})
+        VALUES (#{rows.map { |row| "('#{row[:assignable_id]}', '#{row[:assignable_type]}', #{row[:feature_id]})" }.join(", ")})
       SQL
 
       ActiveRecord::Base.connection.execute(sql)
