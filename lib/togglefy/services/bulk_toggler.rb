@@ -140,7 +140,6 @@ module Togglefy
       return unless rows.any?
 
       ActiveRecord::Base.transaction do
-        # Togglefy::FeatureAssignment.insert_all(rows)
         Rails::VERSION::MAJOR >= 6 ? Togglefy::FeatureAssignment.insert_all(rows) : insert_all(rows)
       end
     rescue Togglefy::Error => e
@@ -155,8 +154,7 @@ module Togglefy
 
       columns = rows.first.keys
       values = rows.map do |row|
-        "(#{columns.map { |col| ActiveRecord::Base.connection.quote(row[col]) }.join(", ")})"
-        # "(" + columns.map { |col| ActiveRecord::Base.connection.quote(row[col]) }.join(", ") + ")"
+        "(#{columns.map { |col| ActiveRecord::Base.connection.quote(row[col]) }.join(", ")}, #{ActiveRecord::Base.sanitize(Time.zone.now)}, #{ActiveRecord::Base.sanitize(Time.zone.now)})"
       end
 
       sql = insert_all_query(columns, values)
@@ -166,35 +164,10 @@ module Togglefy
 
     def insert_all_query(columns, values)
       <<-SQL.squish
-        INSERT INTO togglefy_feature_assignments (#{columns.join(", ")})
+        INSERT INTO togglefy_feature_assignments (#{columns.push(:created_at, :updated_at).join(", ")})
         VALUES #{values.join(", ")}
       SQL
     end
-
-    # rows = [
-    #   { assignable_id: "23b61788-657d-445a-aef5-578e96dbbcdb", assignable_type: "Account", feature_id: 1 },
-    #   { assignable_id: "f80fc3b8-d2b5-4fc7-9bd9-a8231244c8c0", assignable_type: "Account", feature_id: 1 }
-    # ]
-    # Togglefy::FeatureAssignment.create([rows])
-    #
-    # def insert_all(rows)
-    #   sql = <<-SQL
-    #     INSERT INTO togglefy_feature_assignments (assignable_id, assignable_type, feature_id)
-    #     VALUES (#{rows.map { |row| "('#{row[:assignable_id]}', '#{row[:assignable_type]}', #{row[:feature_id]})" }.join(", ")})
-    #   SQL
-    #
-    #   ActiveRecord::Base.connection.execute(sql)
-    # end
-    #
-    # def insert_all(rows)
-    #   sql = <<-SQL
-    #     INSERT INTO togglefy_feature_assignments (assignable_id, assignable_type, feature_id)
-    #     VALUES #{rows.join(", ")})
-    #     ON CONFLICT (assignable_id, assignable_type, feature_id) DO NOTHING
-    #   SQL
-    #
-    #   ActiveRecord::Base.connection.execute(sql)
-    # end
 
     # Disables features for assignables.
     #
