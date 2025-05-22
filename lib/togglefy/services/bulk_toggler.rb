@@ -155,7 +155,8 @@ module Togglefy
 
       columns = rows.first.keys
       values = rows.map do |row|
-        "(" + columns.map { |col| ActiveRecord::Base.connection.quote(row[col]) }.join(", ") + ")"
+        "(#{columns.map { |col| ActiveRecord::Base.connection.quote(row[col]) }.join(", ")})"
+        # "(" + columns.map { |col| ActiveRecord::Base.connection.quote(row[col]) }.join(", ") + ")"
       end
 
       sql = insert_all_query(columns, values)
