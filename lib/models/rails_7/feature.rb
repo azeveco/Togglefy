@@ -89,7 +89,7 @@ module Togglefy
     end
 
     def rails_version
-      "7+"
+      ">= 7"
     end
 
     private
