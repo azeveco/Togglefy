@@ -3,7 +3,7 @@
 module Togglefy
   # The BulkToggler class provides functionality to enable or disable features
   # in bulk for assignables, such as users or accounts.
-  class BulkToggler
+  class BulkToggler # rubocop:disable Metrics/ClassLength
     # List of allowed filters for assignables.
     ALLOWED_ASSIGNABLE_FILTERS = %i[group role environment env tenant_id].freeze
 
@@ -60,7 +60,6 @@ module Togglefy
       feature_ids = features.map(&:id)
 
       assignables = get_assignables(action, feature_ids)
-
       assignables = sample_assignables(assignables, filters[:percentage]) if filters[:percentage]
 
       enable_flow(assignables, features, identifiers) if action == :enable
