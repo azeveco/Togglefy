@@ -140,7 +140,7 @@ module Togglefy
       return unless rows.any?
 
       ActiveRecord::Base.transaction do
-        Rails::VERSION::MAJOR >= 6 ? Togglefy::FeatureAssignment.insert_all(rows) : insert_all(rows)
+        Rails::VERSION::MAJOR >= 6 ? Togglefy::FeatureAssignment.insert_all(rows) : insert_all_flow(rows)
       end
     rescue Togglefy::Error => e
       raise Togglefy::BulkToggleFailed.new(
@@ -149,24 +149,24 @@ module Togglefy
       )
     end
 
-    def insert_all(rows)
-      return if rows.empty?
-
+    def insert_all_flow(rows)
       columns = rows.first.keys
       values = rows.map do |row|
-        "(#{columns.map { |col| ActiveRecord::Base.connection.quote(row[col]) }.join(", ")}, #{ActiveRecord::Base.sanitize(Time.zone.now)}, #{ActiveRecord::Base.sanitize(Time.zone.now)})"
+        "(#{columns.map do |col|
+          ActiveRecord::Base.connection.quote(row[col])
+        end.join(", ")}, #{ActiveRecord::Base.sanitize(Time.zone.now)}, #{ActiveRecord::Base.sanitize(Time.zone.now)})"
       end
 
-      sql = insert_all_query(columns, values)
-
-      ActiveRecord::Base.connection.execute(sql)
+      insert_all(columns, values)
     end
 
-    def insert_all_query(columns, values)
-      <<-SQL.squish
-        INSERT INTO togglefy_feature_assignments (#{columns.push(:created_at, :updated_at).join(", ")})
-        VALUES #{values.join(", ")}
+    def insert_all(columns, values)
+      sql = <<-SQL.squish
+      INSERT INTO togglefy_feature_assignments (#{columns.push(:created_at, :updated_at).join(", ")})
+      VALUES #{values.join(", ")}
       SQL
+
+      ActiveRecord::Base.connection.execute(sql)
     end
 
     # Disables features for assignables.
