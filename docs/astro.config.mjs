@@ -59,6 +59,7 @@ export default defineConfig({
                     { label: 'Managing Features', slug: 'usage/managing-features' },
                     { label: 'Managing Assignables <> Features', slug: 'usage/managing-assignables-features' },
                     { label: 'Querying Features', slug: 'usage/querying-features' },
+                    { label: 'Analytics', slug: 'usage/analytics' },
                     { label: 'Aliases', slug: 'usage/aliases' }
                   ]
                 },
