@@ -2,6 +2,7 @@
 
 require "rails_helper"
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe Togglefy::Analytics do
   let!(:feature_identifier) { :test_feature }
   let!(:feature) { Togglefy::Feature.create!(name: "Test Feature", identifier: feature_identifier, status: :active) }
@@ -139,3 +140,4 @@ RSpec.describe Togglefy::Analytics do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
