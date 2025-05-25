@@ -83,7 +83,7 @@ RSpec.describe Togglefy::Analytics do
 
         expect(result[:enabled_count]).to eq(2)
         expect(result[:disabled_count]).to eq(3)
-        expect(result[:total_count]).to eq(5)
+        expect(result[:total]).to eq(5)
         expect(result[:percentage_enabled]).to eq("40.0%")
         expect(result[:percentage_disabled]).to eq("60.0%")
       end
@@ -98,7 +98,7 @@ RSpec.describe Togglefy::Analytics do
 
           expect(result[:enabled_count]).to eq(0)
           expect(result[:disabled_count]).to eq(0)
-          expect(result[:total_count]).to eq(0)
+          expect(result[:total]).to eq(0)
           expect(result[:percentage_enabled]).to eq("0.00%")
           expect(result[:percentage_disabled]).to eq("0.00%")
         end
@@ -107,9 +107,9 @@ RSpec.describe Togglefy::Analytics do
 
     describe "#build_assignments_data" do
       let(:mock_assignments) { double("ActiveRecord::Relation") }
-      let(:past7_assignments) { double("Relation", count: 3) }
-      let(:past14_assignments) { double("Relation", count: 7) }
-      let(:past30_assignments) { double("Relation", count: 15) }
+      let(:past_7_assignments) { double("Relation", count: 3) }
+      let(:past_14_assignments) { double("Relation", count: 7) }
+      let(:past_30_assignments) { double("Relation", count: 15) }
 
       before do
         travel_to Time.new(2024, 12, 4, 16, 30) # Mon, 04 Dec 2024 16:30:00
@@ -121,13 +121,13 @@ RSpec.describe Togglefy::Analytics do
 
         allow(mock_assignments).to receive(:where)
           .with(created_at: 7.days.ago..Time.current)
-          .and_return(past7_assignments)
+          .and_return(past_7_assignments)
         allow(mock_assignments).to receive(:where)
           .with(created_at: 14.days.ago..Time.current)
-          .and_return(past14_assignments)
+          .and_return(past_14_assignments)
         allow(mock_assignments).to receive(:where)
           .with(created_at: 30.days.ago..Time.current)
-          .and_return(past30_assignments)
+          .and_return(past_30_assignments)
       end
 
       it "builds assignments data correctly" do
@@ -135,9 +135,11 @@ RSpec.describe Togglefy::Analytics do
 
         expect(result[:last_created]).to eq(1.day.ago)
         expect(result[:first_created]).to eq(30.days.ago)
-        expect(result[:past7]).to eq(15)
-        expect(result[:past14]).to eq(15)
-        expect(result[:past30]).to eq(15)
+        # rubocop:disable Naming/VariableNumber
+        expect(result[:past_7]).to eq(15)
+        expect(result[:past_14]).to eq(15)
+        expect(result[:past_30]).to eq(15)
+        # rubocop:enable Naming/VariableNumber
       end
     end
   end
