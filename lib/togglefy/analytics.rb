@@ -122,7 +122,7 @@ module Togglefy
       {
         enabled_count: enabled_count,
         disabled_count: disabled_count,
-        total_count: total,
+        total: total,
         percentage_enabled: calculate_percentage(enabled_count, total),
         percentage_disabled: calculate_percentage(disabled_count, total)
       }

@@ -46,9 +46,11 @@ RSpec.describe Togglefy::Analytics do
         expect(user_tracking[:percentage_disabled]).to eq("60.0%")
         expect(user_tracking[:last_created]).to be_an(Time)
         expect(user_tracking[:first_created]).to be_an(Time)
-        expect(user_tracking[:past7]).to eq(2)
-        expect(user_tracking[:past14]).to eq(2)
-        expect(user_tracking[:past30]).to eq(2)
+        # rubocop:disable Naming/VariableNumber
+        expect(user_tracking[:past_7]).to eq(2)
+        expect(user_tracking[:past_14]).to eq(2)
+        expect(user_tracking[:past_30]).to eq(2)
+        # rubocop:enable Naming/VariableNumber
       end
     end
   end
