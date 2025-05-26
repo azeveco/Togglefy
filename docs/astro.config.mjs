@@ -90,6 +90,7 @@ export default defineConfig({
                     { label: 'Togglefy::FeatureManager', slug: 'reference/api/togglefy-feature-manager' },
                     { label: 'Togglefy::FeatureAssignableManager', slug: 'reference/api/togglefy-feature-assignable-manager' },
                     { label: 'Togglefy::ScopedBulkWrapper', slug: 'reference/api/togglefy-scoped-bulk-wrapper' },
+                    { label: 'Togglefy::Analytics', slug: 'reference/api/togglefy-analytics' }
                   ]
                 },
                 {
