@@ -9,6 +9,7 @@ require "togglefy/feature_manager"
 require "togglefy/feature_query"
 require "togglefy/scoped_bulk_wrapper"
 require "togglefy/errors"
+require "togglefy/analytics"
 
 # The Togglefy module provides a feature management system.
 # It includes methods for querying, creating, updating, toggling, and managing features.
@@ -235,6 +236,13 @@ module Togglefy
   # @return [ScopedBulkWrapper] The bulk wrapper for the class.
   def self.mass_for(klass)
     Togglefy::ScopedBulkWrapper.new(klass)
+  end
+
+  # Provides analytics tracking for a specific feature.
+  # @param identifier [Symbol, String] The unique identifier of the feature.
+  # @return [Array] list of Hashes, each Hash representing an Assignable with its tracking data.
+  def self.analytics_for(identifier)
+    Togglefy::Analytics.new(identifier).track
   end
 
   class << self
