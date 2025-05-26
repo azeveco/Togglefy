@@ -57,14 +57,14 @@ module Togglefy
     #
     # @return [Array<Hash>] Tracking data for each assignable.
     def build_tracking_data
-      assignables.filter_map do |assignable|
+      assignables.map do |assignable|
         assignable_class = safe_constantize(assignable)
         next unless assignable_class
 
         assignable_data = build_assignables_data(assignable_class)
         assignments_data = build_assignments_data
 
-        [{ assignable: assignable }, assignable_data, assignments_data].reduce(:merge)
+        [{ assignable: assignable, feature: @identifier }, assignable_data, assignments_data].reduce(:merge)
       end
     end
 
