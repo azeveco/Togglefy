@@ -12,6 +12,7 @@
 #   # => [
 #   #   {
 #   #     assignable: "User",
+#   #     feature: "dark_mode",
 #   #     enabled_count: 120,
 #   #     disabled_count: 30,
 #   #     total_count: 150,
@@ -35,6 +36,7 @@ module Togglefy
     #
     # @return [Array<Hash>] An array of hashes, each containing:
     #   - assignable type
+    #   - feature identifier
     #   - counts of enabled/disabled
     #   - percentages
     #   - assignment metadata (created_at timestamps, activity windows)
