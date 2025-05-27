@@ -34,12 +34,15 @@ module Togglefy
       }
     end
 
-    # Checks if the assignable has a specific feature.
+    # Checks if the assignable has a specific feature or feature that depends on it.
     #
     # @param identifier [Symbol, String] The identifier of the feature.
     # @return [Boolean] True if the feature exists, false otherwise.
     def feature?(identifier)
-      features.active.exists?(identifier: identifier.to_s)
+      identifiers = FeatureDependencyLoader.features_depending_on(identifier)
+      identifiers << identifier
+
+      features.active.exists?(identifier: identifiers.map(&:to_s)) 
     end
     alias has_feature? feature?
 

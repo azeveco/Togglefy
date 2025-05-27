@@ -79,6 +79,21 @@ module Togglefy
       message: "must be in snake_case (lowercase letters and underscores only)"
     }
 
+
+    # This method returns the feature dependencies for the current feature.
+    # It retrieves the dependencies from the FEATURE_DEPENDENCIES constant.
+    # @return [Array<Symbol>] The dependencies of the feature.
+    def dependencies
+      FeatureDependencyLoader.dependencies_for(identifier)
+    end
+
+    # This method return all features that depend on the current feature.
+    # It retrieves the dependencies from the FEATURE_DEPENDENCIES constant.
+    # @return [Array<Symbol>] An array of feature identifiers that depend on the current feature.
+    def features_depending_on
+      FeatureDependencyLoader.features_depending_on(identifier)
+    end
+
     # This method retrieves all assignables linked to the feature through feature assignments.
     # @return [ActiveRecord::Relation] The assignables associated with the feature.
     # @example
