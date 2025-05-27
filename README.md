@@ -457,32 +457,34 @@ Here’s what the result might look like:
 
 ```ruby
 [
-    {
-        assignable: "User",
-        total: 50,
-        enabled_count: 20,
-        disabled_count: 30,
-        percentage_enabled: "40.0%",
-        percentage_disabled: "60.0%",
-        first_created: 2025-04-21 01:43:28.266664000 UTC +00:00,
-        last_created: 2025-05-21 19:18:37.772172000 UTC +00:00,
-        past_7: 9,
-        past_14: 11,
-        past_30: 0
-    },
-    {
-        assignable: "Account",
-        total: 4,
-        enabled_count: 2,
-        disabled_count: 0,
-        percentage_enabled: "100.0%",
-        percentage_disabled: "0.0%",
-        first_created: 2025-04-21 01:43:28.266664000 UTC +00:00,
-        last_created: 2025-05-21 19:18:37.772172000 UTC +00:00,
-        past7: 2,
-        past14: 0,
-        past30: 0
-    }
+  {
+    assignable: "User",
+    feature: :teleportation,
+    total: 50,
+    enabled_count: 20,
+    disabled_count: 30,
+    percentage_enabled: "40.0%",
+    percentage_disabled: "60.0%",
+    first_created: 2025-04-21 01:43:28.266664000 UTC +00:00,
+    last_created: 2025-05-21 19:18:37.772172000 UTC +00:00,
+    past_7: 9,
+    past_14: 11,
+    past_30: 0
+  },
+  {
+    assignable: "Account",
+    feature: :teleportation,
+    total: 4,
+    enabled_count: 2,
+    disabled_count: 0,
+    percentage_enabled: "100.0%",
+    percentage_disabled: "0.0%",
+    first_created: 2025-04-21 01:43:28.266664000 UTC +00:00,
+    last_created: 2025-05-21 19:18:37.772172000 UTC +00:00,
+    past_7: 2,
+    past_14: 0,
+    past_30: 0
+  }
 ]
 ```
 
@@ -490,17 +492,18 @@ So, how you should interpret that data?
 
 Here’s what each field means:
 
-- `assignable`: The model that includes Togglefy::Assignable.
-- `total`: Total number of assignables in your system.
-- `enabled_count`: Number of assignables that have the feature enabled.
-- `disabled_count`: Number of assignables that have the feature disabled.
-- `percentage_enabled`: Percentage of assignables with the feature enabled.
-- `percentage_disabled`: Percentage of assignables with the feature disabled.
-- `first_created`: The first time the feature was toggled on for this assignable.
-- `last_created`: The most recent time the feature was toggled on for this assignable.
-- `past_7`: Number of times the feature was toggled on in the past 7 days.
-- `past_14`: Number of times the feature was toggled on in the past 14 days.
-- `past_30`: Number of times the feature was toggled on in the past 30 days.
+* `assignable`: The model that includes Togglefy::Assignable.
+* `feature`: The identifier of the feature being tracked (e.g., `:teleportation`).
+* `total`: Total number of assignables in your system.
+* `enabled_count`: Number of assignables that have the feature enabled.
+* `disabled_count`: Number of assignables that have the feature disabled.
+* `percentage_enabled`: Percentage of assignables with the feature enabled.
+* `percentage_disabled`: Percentage of assignables with the feature disabled.
+* `first_created`: The first time the feature was toggled on for this assignable.
+* `last_created`: The most recent time the feature was toggled on for this assignable.
+* `past_7`: Number of times the feature was toggled on in the past 7 days.
+* `past_14`: Number of times the feature was toggled on in the past 14 days.
+* `past_30`: Number of times the feature was toggled on in the past 30 days.
 
 ## Aliases
 

@@ -3,7 +3,7 @@
 module Togglefy
   # The BulkToggler class provides functionality to enable or disable features
   # in bulk for assignables, such as users or accounts.
-  class BulkToggler
+  class BulkToggler # rubocop:disable Metrics/ClassLength
     # List of allowed filters for assignables.
     ALLOWED_ASSIGNABLE_FILTERS = %i[group role environment env tenant_id].freeze
 
@@ -60,7 +60,6 @@ module Togglefy
       feature_ids = features.map(&:id)
 
       assignables = get_assignables(action, feature_ids)
-
       assignables = sample_assignables(assignables, filters[:percentage]) if filters[:percentage]
 
       enable_flow(assignables, features, identifiers) if action == :enable
@@ -140,13 +139,40 @@ module Togglefy
       return unless rows.any?
 
       ActiveRecord::Base.transaction do
-        Togglefy::FeatureAssignment.insert_all(rows)
+        Rails::VERSION::MAJOR >= 6 ? Togglefy::FeatureAssignment.insert_all(rows) : insert_all_flow(rows)
       end
     rescue Togglefy::Error => e
       raise Togglefy::BulkToggleFailed.new(
         "Bulk toggle enable failed for #{klass.name} with identifiers #{identifiers.inspect}",
         e
       )
+    end
+
+    # Build values to send to custom insert_all method for Rails versions below 6
+    #
+    # @param rows [Array<Hash>] The rows to insert.
+    def insert_all_flow(rows)
+      columns = rows.first.keys
+      values = rows.map do |row|
+        "(#{columns.map do |col|
+          ActiveRecord::Base.connection.quote(row[col])
+        end.join(", ")}, #{ActiveRecord::Base.sanitize(Time.zone.now)}, #{ActiveRecord::Base.sanitize(Time.zone.now)})"
+      end
+
+      insert_all(columns, values)
+    end
+
+    # Implements the insert_all method for Rails versions below 6.
+    #
+    # @param columns [Array] The columns to insert.
+    # @param values [Array] The values of the columns to insert.
+    def insert_all(columns, values)
+      sql = <<-SQL.squish
+      INSERT INTO togglefy_feature_assignments (#{columns.push(:created_at, :updated_at).join(", ")})
+      VALUES #{values.join(", ")}
+      SQL
+
+      ActiveRecord::Base.connection.execute(sql)
     end
 
     # Disables features for assignables.
