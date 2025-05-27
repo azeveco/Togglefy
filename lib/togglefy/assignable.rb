@@ -16,8 +16,20 @@ module Togglefy
       # Scope to retrieve assignables with specific features.
       #
       # @param feature_ids [Array<Integer>] The IDs of the features to filter by.
+      # scope :with_features, lambda { |feature_ids|
+      #   joins(:feature_assignments)
+      #     .where(feature_assignments: {
+      #              feature_id: feature_ids
+      #            })
+      #     .distinct
+      # }
+      #
+      # Had to change this scope to a manual SQL join because older Rails versions was losing context/alias
+      # of the join, causing the where clause to not work properly.
       scope :with_features, lambda { |feature_ids|
-        joins(:feature_assignments)
+        joins("INNER JOIN togglefy_feature_assignments AS feature_assignments
+          ON feature_assignments.assignable_id = #{table_name}.id AND
+          feature_assignments.assignable_type = '#{name}'")
           .where(feature_assignments: {
                    feature_id: feature_ids
                  })

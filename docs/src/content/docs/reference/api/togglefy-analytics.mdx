@@ -1,0 +1,77 @@
+---
+title: Togglefy::Analytics
+description: Analytics module, responsible for tracking usage information of your Features
+---
+
+This module provides analytics functionality for Togglefy. It analyzes feature usage and assignment data, given feature identifier on initialization.
+
+## Methods
+
+### analytics_for
+
+**Description**
+
+---
+
+This method is used to create a new instance of the `Togglefy::Analytics` with a specific feature identifier and track data.
+
+It allows you to track and analyze the usage of that feature across different assignables.
+
+After creating the instance, it automatically calls the [`track`](#track) method to track the feature's usage data.
+
+**Parameters**
+
+---
+
+```ruby
+feature_identifier: feature_identifier # Required
+```
+
+**Usage Examples**
+
+---
+
+```ruby
+Togglefy.analytics_for(:feature_identifier)
+```
+
+**Return**
+
+---
+
+```ruby
+[Array(Hash)]
+```
+
+### track
+
+**Description**
+
+---
+
+Based on the `identifier` provided in the initialization, generates analytics data for the found Feature.
+
+**Usage**
+
+---
+
+```ruby
+Togglefy.analytics_for(:identifier_slug)
+```
+
+**Parameters**
+
+---
+
+```ruby
+identifier: Symbol || String # Required
+```
+
+**Return**
+
+---
+
+```ruby
+[Array(Hash)]
+```
+

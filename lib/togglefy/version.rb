@@ -2,5 +2,5 @@
 
 module Togglefy
   # The VERSION constant defines the current version of the Togglefy gem.
-  VERSION = "1.2.1"
+  VERSION = "1.3.0"
 end
