@@ -148,6 +148,9 @@ module Togglefy
       )
     end
 
+    # Build values to send to custom insert_all method for Rails versions below 6
+    #
+    # @param rows [Array<Hash>] The rows to insert.
     def insert_all_flow(rows)
       columns = rows.first.keys
       values = rows.map do |row|
@@ -159,6 +162,10 @@ module Togglefy
       insert_all(columns, values)
     end
 
+    # Implements the insert_all method for Rails versions below 6.
+    #
+    # @param columns [Array] The columns to insert.
+    # @param values [Array] The values of the columns to insert.
     def insert_all(columns, values)
       sql = <<-SQL.squish
       INSERT INTO togglefy_feature_assignments (#{columns.push(:created_at, :updated_at).join(", ")})
