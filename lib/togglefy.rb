@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require "togglefy/version"
+require "togglefy/config"
 require "togglefy/engine" if defined?(Rails)
 require "togglefy/featureable"
 require "togglefy/assignable"
 require "togglefy/feature_assignable_manager"
+require "togglefy/feature_dependency_loader" if defined?(Rails)
 require "togglefy/feature_manager"
 require "togglefy/feature_query"
 require "togglefy/scoped_bulk_wrapper"

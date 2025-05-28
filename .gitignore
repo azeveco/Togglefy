@@ -70,3 +70,6 @@ docs/.env.production
 
 # macOS-specific files
 .DS_Store
+
+# Ignore dependencies files
+config/feature_dependencies.yml

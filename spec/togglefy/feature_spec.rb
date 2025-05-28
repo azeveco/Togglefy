@@ -105,4 +105,7 @@ RSpec.describe Togglefy::Feature, type: :model do
       expect(described_class.without_tenant).not_to include(f2)
     end
   end
+
+  describe "dependencies" do
+  end
 end

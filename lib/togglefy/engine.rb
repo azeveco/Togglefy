@@ -5,5 +5,9 @@ module Togglefy
   # It isolates the namespace to avoid conflicts with other parts of the application.
   class Engine < ::Rails::Engine
     isolate_namespace Togglefy
+
+    initializer "togglefy.load_config" do |app|
+      Togglefy::Config.load
+    end
   end
 end

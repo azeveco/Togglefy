@@ -39,7 +39,7 @@ module Togglefy
     # @param identifier [Symbol, String] The identifier of the feature.
     # @return [Boolean] True if the feature exists, false otherwise.
     def feature?(identifier)
-      identifiers = FeatureDependencyLoader.features_depending_on(identifier)
+      identifiers = Togglefy::FeatureDependencyLoader.features_depending_on(identifier)
       identifiers << identifier
 
       features.active.exists?(identifier: identifiers.map(&:to_s)) 
