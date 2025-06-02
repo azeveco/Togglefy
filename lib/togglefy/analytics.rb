@@ -29,7 +29,7 @@ module Togglefy
     # @param identifier [String, Symbol, nil] The unique feature identifier.
     def initialize(identifier = nil)
       @identifier = identifier
-      @feature = fetch_feature
+      @feature_data = fetch_feature_data
     end
 
     # Generates analytics data for the feature.
@@ -41,47 +41,38 @@ module Togglefy
     #   - percentages
     #   - assignment metadata (created_at timestamps, activity windows)
     def track
-      return [] unless @feature
+      return [] unless @feature_data
 
       build_tracking_data
     end
 
     private
 
-    # Attempts to fetch the feature based on the identifier.
+    # Attempts to fetch the feature data based on the identifier.
     #
     # @return [Togglefy::Feature, nil] The feature if found, else nil.
-    def fetch_feature
-      Togglefy.feature(@identifier) || nil
+    def fetch_feature_data
+      Togglefy::Feature.includes(feature_assignments: :assignable)
+                       .find_by(identifier: @identifier)
     end
 
     # Builds the full tracking data array.
     #
     # @return [Array<Hash>] Tracking data for each assignable.
     def build_tracking_data
-      assignables.map do |assignable|
-        assignable_class = safe_constantize(assignable)
+      @feature_data.feature_assignments.group_by(&:assignable_type).map do |assignable_type, assignments|
+        assignable_class = safe_constantize(assignable_type)
         next unless assignable_class
 
-        assignable_data = build_assignables_data(assignable_class)
-        assignments_data = build_assignments_data
+        total_count = assignable_class.count
+        enabled_count = assignments.count
+        disabled_count = total_count - enabled_count
 
-        [{ assignable: assignable, feature: @identifier }, assignable_data, assignments_data].reduce(:merge)
-      end
-    end
+        assignable_data = assignables_data(enabled_count, disabled_count, total_count)
+        assignments_data = build_assignments_data(assignments)
 
-    # Returns a list of assignable class names related to the feature.
-    #
-    # @return [Array<String>] The list of assignable types (e.g., ["User", "Admin"]).
-    def assignables
-      @assignables ||= assignments.map(&:assignable_type).uniq
-    end
-
-    # Returns all assignments for the current feature.
-    #
-    # @return [ActiveRecord::Relation] The assignment records (enabled/disabled toggles).
-    def assignments
-      @assignments ||= @feature ? Togglefy::FeatureAssignment.where(feature_id: @feature.id) : []
+        [{ assignable: assignable_type, feature: @identifier }, assignable_data, assignments_data].reduce(:merge)
+      end.compact
     end
 
     # Safely converts a string class name to a constant.
@@ -93,25 +84,6 @@ module Togglefy
     rescue NameError => e
       Rails.logger.warn("Invalid assignable class: #{assignable} - #{e.message}")
       nil
-    end
-
-    # Builds metrics for how the feature is distributed across assignables.
-    #
-    # @param klass [Class] The assignable class.
-    # @return [Hash] Count and percentage breakdown.
-    def build_assignables_data(klass)
-      return assignables_data unless klass.respond_to?(:with_features) && klass.respond_to?(:without_features)
-
-      with_features = klass.with_features(@feature.id)
-      without_features = klass.without_features(@feature.id)
-
-      enabled_count = with_features.count
-      disabled_count = without_features.count
-      total_count = enabled_count + disabled_count
-
-      return assignables_data if total_count.zero?
-
-      assignables_data(enabled_count, disabled_count, total_count)
     end
 
     # Builds a base hash of assignment data counts and percentages.
@@ -144,40 +116,26 @@ module Togglefy
 
     # Builds time-based metrics for feature assignment activity.
     #
+    # @param assignments [ActiveRecord::Relation] The feature assignment records.
     # @return [Hash] Assignment activity data.
-    def build_assignments_data
-      return default_assignments_data if assignments.empty?
-
+    def build_assignments_data(assignments)
       # rubocop:disable Naming/VariableNumber
       {
-        last_created: assignments.maximum(:created_at),
-        first_created: assignments.minimum(:created_at),
-        past_7: count_assignments_in_period(7.days.ago),
-        past_14: count_assignments_in_period(14.days.ago),
-        past_30: count_assignments_in_period(30.days.ago)
+        last_created: assignments.map(&:created_at).max || nil,
+        first_created: assignments.map(&:created_at).min || nil,
+        past_7: count_assignments_in(assignments, 7.days.ago),
+        past_14: count_assignments_in(assignments, 14.days.ago),
+        past_31: count_assignments_in(assignments, 31.days.ago)
       }
       # rubocop:enable Naming/VariableNumber
     end
 
     # Counts how many assignments occurred since a given date.
     #
-    # @param start_date [Date, Time] The starting date for the activity window.
+    # @param period [Date, Time] Range period which the method will count the assignments.
     # @return [Integer] The number of assignments created since that date.
-    def count_assignments_in_period(start_date)
-      assignments.where(created_at: start_date..Time.current).count
-    end
-
-    # Returns default assignment tracking data for a feature.
-    #
-    # @return [Hash] A hash with default values for assignment metrics.
-    def default_assignments_data
-      {
-        last_created: nil,
-        first_created: nil,
-        past7: 0,
-        past14: 0,
-        past30: 0
-      }
+    def count_assignments_in(assignments, period)
+      assignments.count { |a| a.created_at >= period } || 0
     end
   end
 end
