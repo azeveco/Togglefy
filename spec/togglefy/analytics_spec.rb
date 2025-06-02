@@ -14,8 +14,10 @@ RSpec.describe Togglefy::Analytics do
   describe "#initialize" do
     context "with valid identifier" do
       it "sets the identifier and fetches the feature" do
-        expect(Togglefy).to receive(:feature).with(feature_identifier)
-        described_class.new(feature_identifier)
+        analytics = described_class.new(feature_identifier)
+
+        expect(analytics.instance_variable_get(:@identifier)).to eq(feature_identifier)
+        expect(analytics.instance_variable_get(:@feature_data)).to be_present
       end
     end
   end
@@ -24,20 +26,25 @@ RSpec.describe Togglefy::Analytics do
     before do
       user_one.add_feature(feature_identifier)
       user_two.add_feature(feature_identifier)
+
+      # Create additional users without the feature
       3.times { User.create! }
     end
 
     context "when feature exists" do
       it "returns tracking data consistent" do
-        result = analytics.track
+        result = described_class.new(feature_identifier).track
+
         expect(result).to be_an(Array)
-        expect(result.first).to be_an(Hash)
+        expect(result).not_to be_empty
+        expect(result.first).to be_a(Hash)
       end
 
       it "returns tracking data correctly" do
-        result = analytics.track
-        user_tracking = result.first
+        result = described_class.new(feature_identifier).track
+        expect(result).not_to be_empty
 
+        user_tracking = result.first
         expect(user_tracking[:assignable]).to eq("User")
         expect(user_tracking[:total]).to eq(5)
         expect(user_tracking[:enabled_count]).to eq(2)
@@ -49,7 +56,7 @@ RSpec.describe Togglefy::Analytics do
         # rubocop:disable Naming/VariableNumber
         expect(user_tracking[:past_7]).to eq(2)
         expect(user_tracking[:past_14]).to eq(2)
-        expect(user_tracking[:past_30]).to eq(2)
+        expect(user_tracking[:past_31]).to eq(2)
         # rubocop:enable Naming/VariableNumber
       end
     end
@@ -71,15 +78,9 @@ RSpec.describe Togglefy::Analytics do
       end
     end
 
-    describe "#build_assignables_data" do
-      before do
-        user_one.add_feature(feature_identifier)
-        user_two.add_feature(feature_identifier)
-        3.times { User.create! }
-      end
-
+    describe "#assignables_data" do
       it "builds assignable data correctly" do
-        result = analytics.send(:build_assignables_data, user_class)
+        result = analytics.send(:assignables_data, 2, 3, 5)
 
         expect(result[:enabled_count]).to eq(2)
         expect(result[:disabled_count]).to eq(3)
@@ -88,58 +89,84 @@ RSpec.describe Togglefy::Analytics do
         expect(result[:percentage_disabled]).to eq("60.0%")
       end
 
-      context "when assignable doesnt respond to Togglefy methods" do
-        before do
-          allow(user_class).to receive(:respond_to?).with(:with_features).and_return(false)
-        end
+      it "handles zero totals gracefully" do
+        result = analytics.send(:assignables_data)
 
-        it "returns default assignable data" do
-          result = analytics.send(:build_assignables_data, user_class)
-
-          expect(result[:enabled_count]).to eq(0)
-          expect(result[:disabled_count]).to eq(0)
-          expect(result[:total]).to eq(0)
-          expect(result[:percentage_enabled]).to eq("0.00%")
-          expect(result[:percentage_disabled]).to eq("0.00%")
-        end
+        expect(result[:enabled_count]).to eq(0)
+        expect(result[:disabled_count]).to eq(0)
+        expect(result[:total]).to eq(0)
+        expect(result[:percentage_enabled]).to eq("0.00%")
+        expect(result[:percentage_disabled]).to eq("0.00%")
       end
     end
 
     describe "#build_assignments_data" do
-      let(:mock_assignments) { double("ActiveRecord::Relation") }
-      let(:past_7_assignments) { double("Relation", count: 3) }
-      let(:past_14_assignments) { double("Relation", count: 7) }
-      let(:past_30_assignments) { double("Relation", count: 15) }
+      let(:created_times) do
+        [
+          Time.current - 1.day,
+          Time.current - 5.days,
+          Time.current - 10.days,
+          Time.current - 20.days
+        ]
+      end
+
+      let(:mock_assignments) do
+        created_times.map do |time|
+          instance_double("Togglefy::FeatureAssignment", created_at: time)
+        end
+      end
 
       before do
         travel_to Time.new(2024, 12, 4, 16, 30) # Mon, 04 Dec 2024 16:30:00
-
-        allow(analytics).to receive(:assignments).and_return(mock_assignments)
-        allow(mock_assignments).to receive(:empty?).and_return(false)
-        allow(mock_assignments).to receive(:maximum).with(:created_at).and_return(1.day.ago)
-        allow(mock_assignments).to receive(:minimum).with(:created_at).and_return(30.days.ago)
-
-        allow(mock_assignments).to receive(:where)
-          .with(created_at: 7.days.ago..Time.current)
-          .and_return(past_7_assignments)
-        allow(mock_assignments).to receive(:where)
-          .with(created_at: 14.days.ago..Time.current)
-          .and_return(past_14_assignments)
-        allow(mock_assignments).to receive(:where)
-          .with(created_at: 30.days.ago..Time.current)
-          .and_return(past_30_assignments)
       end
 
       it "builds assignments data correctly" do
-        result = analytics.send(:build_assignments_data)
+        result = analytics.send(:build_assignments_data, mock_assignments)
 
-        expect(result[:last_created]).to eq(1.day.ago)
-        expect(result[:first_created]).to eq(30.days.ago)
+        expect(result[:last_created]).to eq(created_times.first)
+        expect(result[:first_created]).to eq(created_times.last)
         # rubocop:disable Naming/VariableNumber
-        expect(result[:past_7]).to eq(15)
-        expect(result[:past_14]).to eq(15)
-        expect(result[:past_30]).to eq(15)
+        expect(result[:past_7]).to eq(2) # 1 day and 5 days ago
+        expect(result[:past_14]).to eq(3) # 1, 5, and 10 days ago
+        expect(result[:past_31]).to eq(4) # all assignments
         # rubocop:enable Naming/VariableNumber
+      end
+
+      it "handles empty assignments gracefully" do
+        result = analytics.send(:build_assignments_data, [])
+
+        expect(result[:last_created]).to be_nil
+        expect(result[:first_created]).to be_nil
+        # rubocop:disable Naming/VariableNumber
+        expect(result[:past_7]).to eq(0)
+        expect(result[:past_14]).to eq(0)
+        expect(result[:past_31]).to eq(0)
+        # rubocop:enable Naming/VariableNumber
+      end
+    end
+
+    describe "#count_assignments_in" do
+      let(:assignments) do
+        [
+          instance_double("Togglefy::FeatureAssignment", created_at: Time.current - 1.day),
+          instance_double("Togglefy::FeatureAssignment", created_at: Time.current - 5.days),
+          instance_double("Togglefy::FeatureAssignment", created_at: Time.current - 10.days),
+          instance_double("Togglefy::FeatureAssignment", created_at: Time.current - 20.days)
+        ]
+      end
+
+      before do
+        travel_to Time.new(2024, 12, 4, 16, 30) # Mon, 04 Dec 2024 16:30:00
+      end
+
+      it "counts assignments correctly for different periods" do
+        expect(analytics.send(:count_assignments_in, assignments, 7.days.ago)).to eq(2)
+        expect(analytics.send(:count_assignments_in, assignments, 14.days.ago)).to eq(3)
+        expect(analytics.send(:count_assignments_in, assignments, 31.days.ago)).to eq(4)
+      end
+
+      it "returns 0 for empty assignments" do
+        expect(analytics.send(:count_assignments_in, [], 7.days.ago)).to eq(0)
       end
     end
   end

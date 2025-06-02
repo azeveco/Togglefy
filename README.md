@@ -469,7 +469,7 @@ Here’s what the result might look like:
     last_created: 2025-05-21 19:18:37.772172000 UTC +00:00,
     past_7: 9,
     past_14: 11,
-    past_30: 0
+    past_31: 0
   },
   {
     assignable: "Account",
@@ -483,7 +483,7 @@ Here’s what the result might look like:
     last_created: 2025-05-21 19:18:37.772172000 UTC +00:00,
     past_7: 2,
     past_14: 0,
-    past_30: 0
+    past_31: 0
   }
 ]
 ```
@@ -503,7 +503,7 @@ Here’s what each field means:
 * `last_created`: The most recent time the feature was toggled on for this assignable.
 * `past_7`: Number of times the feature was toggled on in the past 7 days.
 * `past_14`: Number of times the feature was toggled on in the past 14 days.
-* `past_30`: Number of times the feature was toggled on in the past 30 days.
+* `past_31`: Number of times the feature was toggled on in the past 30 days.
 
 ## Aliases
 
