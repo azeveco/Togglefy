@@ -42,7 +42,7 @@ module Togglefy
       identifiers = Togglefy::FeatureDependencyLoader.features_depending_on(identifier)
       identifiers << identifier
 
-      features.active.exists?(identifier: identifiers.map(&:to_s)) 
+      features.active.exists?(identifier: identifiers)
     end
     alias has_feature? feature?
 

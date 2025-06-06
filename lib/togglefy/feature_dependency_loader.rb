@@ -13,29 +13,31 @@ module Togglefy
       end
 
       _dependencies = {}
-      
+
       # Only load dependencies if Rails.root is defined
       # This ensures that the code runs only in a Rails application context.
-      unless defined?(Rails) && Rails.respond_to?(:root) && root_path= Rails.root
+      unless defined?(Rails) && Rails.respond_to?(:root) && root_path = Rails.root
         raise Togglefy::Error, "Rails.root is not set. Are you running inside a Rails application?"
       end
-      
-      file_path = File.join(root_path, 'config', 'feature_dependencies.yml')
-      
+
+      file_path = File.join(root_path, "config", "togglefy.yml")
+
       if File.exist?(file_path)
         _dependencies = YAML.load_file(file_path) || {}
 
-        _dependencies.map do |key, value|
-          [key.to_sym, load_dependencies_for(key, _dependencies)]
+        _dependencies = _dependencies["feature_dependency"]
+
+        _dependencies = _dependencies.keys.uniq.map do |key|
+          [key, load_dependencies_for(key, _dependencies)]
         end.to_h
       end
 
       @@feature_dependencies = _dependencies
-      @@inverted_feature_dependencies = _dependencies.map do |key, value|
-        [key.to_sym, load_dependencies_for(key, _dependencies)]
+      @@inverted_feature_dependencies = @@feature_dependencies.values.flatten.uniq.map do |key|
+        [key, load_depends_on(key, @@feature_dependencies)]
       end.to_h
 
-      return @@feature_dependencies, @@inverted_feature_dependencies
+      [@@feature_dependencies, @@inverted_feature_dependencies]
     rescue Psych::SyntaxError => e
       raise Togglefy::Error, "Error parsing feature dependencies file: #{e.message}"
     rescue StandardError => e
@@ -52,7 +54,7 @@ module Togglefy
     #   # => [:feature_b, :feature_c]
     def self.load_depends_on(identifier, dependencies)
       dependencies.select do |key, _dependencies|
-        _dependencies.include?(identifier.to_sym)
+        _dependencies.include?(identifier)
       end.keys
     rescue StandardError => e
       raise Togglefy::Error, "An error occurred while retrieving dependencies for '#{identifier}': #{e.message}"
@@ -68,11 +70,13 @@ module Togglefy
     # @note This method is used internally to resolve dependencies recursively.
     # @raise [Togglefy::Error] If there is an error loading dependencies for the identifier.
     def self.load_dependencies_for(identifier, dependencies)
-      _dependencies = dependencies[identifier.to_sym] || []
-      
-      _dependencies += _dependencies.flat_map do |dep|
+      direct_dependencies = dependencies[identifier] || []
+
+      iherit_dependencies = direct_dependencies.map do |dep|
         load_dependencies_for(dep, dependencies)
-      end
+      end.flatten
+
+      direct_dependencies + iherit_dependencies
     rescue StandardError => e
       raise Togglefy::Error, "An error occurred while loading dependencies for '#{identifier}': #{e.message}"
     end
@@ -83,7 +87,7 @@ module Togglefy
     # @return [Array<Symbol>] The dependencies of the feature.
     # @raise [Togglefy::Error] If there is an error retrieving dependencies for the identifier.
     def self.dependencies_for(identifier)
-      _dependencies = @@feature_dependencies[identifier.to_sym] || []
+      _dependencies = @@feature_dependencies[identifier] || []
     rescue StandardError => e
       raise Togglefy::Error, "An error occurred while retrieving dependencies for '#{identifier}': #{e.message}"
     end
@@ -94,7 +98,7 @@ module Togglefy
     # @return [Boolean] True if the feature has dependencies, false otherwise.
     # @raise [Togglefy::Error] If there is an error checking dependencies for the identifier.
     def self.has_dependencies?(identifier)
-      @@feature_dependencies.key?(identifier.to_sym)
+      @@feature_dependencies.key?(identifier)
     rescue StandardError => e
       raise Togglefy::Error, "An error occurred while checking dependencies for '#{identifier}': #{e.message}"
     end
@@ -106,8 +110,7 @@ module Togglefy
     # @return [Array<Symbol>] An array of feature identifiers that depend on the given identifier.
     # @raise [Togglefy::Error] If there is an error retrieving features depending on the identifier.
     def self.features_depending_on(identifier)
-      puts @@inverted_feature_dependencies 
-      @@inverted_feature_dependencies[identifier.to_sym] || []
+      @@inverted_feature_dependencies[identifier.to_s] || []
     rescue StandardError => e
       raise Togglefy::Error, "An error occurred while retrieving features depending on '#{identifier}': #{e.message}"
     end

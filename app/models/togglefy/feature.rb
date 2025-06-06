@@ -79,7 +79,6 @@ module Togglefy
       message: "must be in snake_case (lowercase letters and underscores only)"
     }
 
-
     # This method returns the feature dependencies for the current feature.
     # It retrieves the dependencies from the FEATURE_DEPENDENCIES constant.
     # @return [Array<Symbol>] The dependencies of the feature.

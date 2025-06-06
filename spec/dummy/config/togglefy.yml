@@ -1,0 +1,11 @@
+
+feature_dependency:
+  feat_a: 
+    - feat_d
+
+  feat_b: 
+    - feat_e
+
+  feat_c:
+    - feat_a
+    - feat_b
